@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GDD — Futebol Roblox · Base de referência Rematch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A1013;
+  --ink-2:#0E171B;
+  --panel:#131E22;
+  --panel-2:#18262B;
+  --line:#22353B;
+  --chalk:#E6EFEA;
+  --chalk-dim:#93A8A5;
+  --chalk-faint:#5E7377;
+  --amber:#F0B429;
+  --amber-deep:#B8801A;
+  --teal:#3FBFA8;
+  --flare:#E2574C;
+  --violet:#9B8CFA;
+  --display:'Archivo Black',Impact,sans-serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --nav-w:250px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  background:var(--ink);
+  color:var(--chalk);
+  font-family:var(--body);
+  font-size:15px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+/* pitch line texture */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 119px,rgba(63,191,168,.035) 119px 120px),
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(240,180,41,.07),transparent 70%);
+}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+/* ── TOP BAR ─────────────────────────────── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:64px;z-index:60;
+  display:flex;align-items:center;gap:20px;padding:0 22px;
+  background:rgba(10,16,19,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0}
+.brand-mark{
+  font-family:var(--display);font-size:19px;letter-spacing:-.02em;
+  color:var(--ink);background:var(--amber);
+  padding:3px 11px 4px;
+  clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%);
+}
+.brand-sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--chalk-faint);text-transform:uppercase}
+.search-wrap{margin-left:auto;position:relative;flex:0 1 300px}
+.search{
+  width:100%;background:var(--panel);border:1px solid var(--line);
+  color:var(--chalk);font-family:var(--mono);font-size:12.5px;
+  padding:8px 12px 8px 32px;border-radius:2px;
+}
+.search::placeholder{color:var(--chalk-faint)}
+.search:focus{border-color:var(--amber);outline:none}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--chalk-faint);font-size:13px}
+.navtoggle{display:none;background:var(--panel);border:1px solid var(--line);color:var(--chalk);
+  font-family:var(--mono);font-size:11px;padding:7px 11px;cursor:pointer;border-radius:2px}
+
+/* ── SHELL ───────────────────────────────── */
+.shell{display:flex;padding-top:64px;position:relative;z-index:1}
+.sidenav{
+  width:var(--nav-w);flex-shrink:0;position:sticky;top:64px;height:calc(100vh - 64px);
+  overflow-y:auto;border-right:1px solid var(--line);padding:26px 0 60px;
+  background:var(--ink-2);
+}
+.sidenav::-webkit-scrollbar{width:5px}
+.sidenav::-webkit-scrollbar-thumb{background:var(--line)}
+.nav-group{margin-bottom:22px}
+.nav-label{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--chalk-faint);padding:0 22px 8px;
+}
+.sidenav a{
+  display:block;padding:6px 22px;color:var(--chalk-dim);font-size:13.5px;
+  border-left:2px solid transparent;transition:.14s;
+}
+.sidenav a:hover{color:var(--chalk);background:rgba(63,191,168,.05);text-decoration:none}
+.sidenav a.on{color:var(--amber);border-left-color:var(--amber);background:rgba(240,180,41,.06)}
+
+main{flex:1;min-width:0;padding:0 0 100px}
+.wrap{max-width:1080px;padding:0 40px}
+
+/* ── HERO ────────────────────────────────── */
+.hero{padding:58px 40px 44px;border-bottom:1px solid var(--line);max-width:1080px}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:16px;
+}
+h1{
+  font-family:var(--display);font-size:clamp(34px,5.4vw,62px);line-height:.96;
+  letter-spacing:-.025em;margin-bottom:20px;
+}
+h1 em{font-style:normal;color:var(--amber)}
+.lede{font-size:17px;color:var(--chalk-dim);max-width:60ch;margin-bottom:26px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+  border:1px solid var(--line);color:var(--chalk-dim);
+  padding:4px 10px;border-radius:2px;background:var(--panel);
+}
+.chip b{color:var(--amber);font-weight:500}
+
+/* ── SECTIONS ────────────────────────────── */
+section{padding:52px 0 8px;scroll-margin-top:80px}
+.sec-head{display:flex;align-items:flex-end;gap:14px;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.sec-num{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.12em;padding-bottom:5px}
+h2{font-family:var(--display);font-size:clamp(23px,3vw,33px);letter-spacing:-.02em;line-height:1.05}
+h3{font-family:var(--body);font-weight:700;font-size:17px;margin:30px 0 12px;color:var(--chalk)}
+h4{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);margin:22px 0 10px}
+.sec-intro{color:var(--chalk-dim);max-width:66ch;margin:16px 0 8px}
+p{margin-bottom:13px;max-width:72ch}
+
+/* ── TRAJECTORY LAB ──────────────────────── */
+.lab{
+  border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--ink-2));
+  margin:28px 0 10px;
+}
+.lab-head{
+  display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);
+  background:rgba(240,180,41,.045);
+}
+.lab-dot{width:7px;height:7px;background:var(--amber);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.lab-title{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+.lab-hint{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--chalk-faint)}
+.lab-body{display:grid;grid-template-columns:196px 1fr;min-height:400px}
+.lab-picker{border-right:1px solid var(--line);padding:12px 0;overflow-y:auto;max-height:460px}
+.lab-btn{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  color:var(--chalk-dim);font-family:var(--body);font-size:13px;
+  padding:8px 16px;cursor:pointer;border-left:2px solid transparent;transition:.14s;
+}
+.lab-btn:hover{color:var(--chalk);background:rgba(255,255,255,.03)}
+.lab-btn.on{color:var(--ink);background:var(--amber);border-left-color:var(--amber-deep);font-weight:600}
+.lab-btn small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;opacity:.65;text-transform:uppercase}
+.lab-stage{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.lab-canvas{
+  flex:1;min-height:236px;background:var(--ink);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
+}
+.lab-canvas svg{width:100%;height:100%;display:block}
+.lab-info h5{font-family:var(--body);font-weight:700;font-size:16px;margin-bottom:6px}
+.lab-info p{font-size:13.5px;color:var(--chalk-dim);margin-bottom:10px;max-width:none}
+.lab-inputs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lab-replay{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--chalk-dim);
+  padding:5px 12px;cursor:pointer;border-radius:2px;margin-left:auto;
+}
+.lab-replay:hover{border-color:var(--amber);color:var(--amber)}
+
+/* keycap */
+.key{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  background:var(--panel-2);border:1px solid var(--line);border-bottom-width:2px;
+  color:var(--chalk);padding:3px 8px;border-radius:3px;white-space:nowrap;display:inline-block;
+}
+.key.hot{background:rgba(240,180,41,.14);border-color:var(--amber-deep);color:var(--amber)}
+.arrow{color:var(--chalk-faint);font-size:12px}
+
+/* ── ANIM PRIMITIVES ─────────────────────── */
+.pitchline{stroke:rgba(230,239,234,.16);stroke-width:1;fill:none}
+.pitchfill{fill:rgba(63,191,168,.045)}
+.traj{stroke:var(--amber);stroke-width:2;fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.traj-ghost{stroke:rgba(240,180,41,.22);stroke-width:2;fill:none;stroke-dasharray:3 4}
+.ballc{fill:var(--chalk)}
+.defc{fill:var(--flare);opacity:.85}
+.labeltxt{font-family:var(--mono);font-size:9px;fill:var(--chalk-faint);letter-spacing:.1em}
+.run{animation:draw 1.9s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.runball{animation:travel 1.9s ease-out forwards}
+@keyframes travel{from{offset-distance:0%}to{offset-distance:100%}}
+@media (prefers-reduced-motion:reduce){
+  .run,.runball,.lab-dot{animation:none!important}
+  .run{stroke-dashoffset:0!important}
+  html{scroll-behavior:auto}
+}
+
+/* ── CARDS / GRID ────────────────────────── */
+.grid{display:grid;gap:14px;margin:18px 0}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--panel);border:1px solid var(--line);padding:16px 18px;
+  border-radius:2px;position:relative;
+}
+.card-t{font-family:var(--body);font-weight:700;font-size:14.5px;margin-bottom:6px}
+.card p{font-size:13.5px;color:var(--chalk-dim);margin:0}
+.card ul{margin:8px 0 0 16px;font-size:13.5px;color:var(--chalk-dim)}
+.card li{margin-bottom:3px}
+.card.accent{border-left:3px solid var(--amber)}
+.card.tealb{border-left:3px solid var(--teal)}
+.card.warn{border-left:3px solid var(--flare)}
+.stat{font-family:var(--display);font-size:30px;color:var(--amber);line-height:1;display:block;margin-bottom:4px}
+.stat-l{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint)}
+
+/* ── TABLE ───────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+.tbl th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--chalk-faint);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:500;
+}
+.tbl td{padding:10px 12px;border-bottom:1px solid rgba(34,53,59,.55);vertical-align:top;color:var(--chalk-dim)}
+.tbl tr:hover td{background:rgba(63,191,168,.035)}
+.tbl td strong{color:var(--chalk);font-weight:600}
+.tbl .num{font-family:var(--mono);color:var(--amber);font-size:12px;width:34px}
+
+/* ── MECHANIC CARDS ──────────────────────── */
+.meclist{display:flex;flex-direction:column;gap:9px;margin:18px 0}
+.mec{
+  display:grid;grid-template-columns:34px 1fr;gap:14px;
+  background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:2px;
+  transition:.15s;
+}
+.mec:hover{border-color:rgba(240,180,41,.4);background:var(--panel-2)}
+.mec-n{font-family:var(--mono);font-size:12px;color:var(--amber);padding-top:2px}
+.mec-t{font-weight:700;font-size:15px;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;font-weight:500;
+}
+.tag.novo{background:rgba(240,180,41,.16);color:var(--amber)}
+.tag.avan{background:rgba(155,140,250,.15);color:var(--violet)}
+.tag.base{background:rgba(63,191,168,.13);color:var(--teal)}
+.mec-d{font-size:13.5px;color:var(--chalk-dim);margin-bottom:9px}
+.mec-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.src{
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  border:1px solid var(--line);padding:3px 9px;border-radius:2px;
+  color:var(--chalk-faint);
+}
+.src:hover{border-color:var(--teal);color:var(--teal);text-decoration:none}
+.src::after{content:' ↗';opacity:.6}
+
+/* ── CALLOUT ─────────────────────────────── */
+.callout{
+  border:1px solid var(--line);border-left:3px solid var(--teal);
+  background:rgba(63,191,168,.05);padding:14px 18px;margin:18px 0;
+}
+.callout.danger{border-left-color:var(--flare);background:rgba(226,87,76,.06)}
+.callout.gold{border-left-color:var(--amber);background:rgba(240,180,41,.05)}
+.callout-t{
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:6px;
+}
+.callout.danger .callout-t{color:var(--flare)}
+.callout.gold .callout-t{color:var(--amber)}
+.callout p{font-size:13.5px;color:var(--chalk-dim);margin:0}
+.callout p+p{margin-top:8px}
+
+/* ── TABS ────────────────────────────────── */
+.tabs{display:flex;gap:2px;margin:20px 0 0;flex-wrap:wrap}
+.tab{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--panel);border:1px solid var(--line);border-bottom:none;
+  color:var(--chalk-dim);padding:9px 16px;cursor:pointer;
+  clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
+}
+.tab.on{background:var(--amber);color:var(--ink);font-weight:600}
+.tabpanel{border:1px solid var(--line);background:var(--panel);padding:20px 22px;display:none}
+.tabpanel.on{display:block}
+
+/* ── KEYBOARD MAP ────────────────────────── */
+.kbmap{display:flex;flex-direction:column;gap:6px}
+.kbrow{display:grid;grid-template-columns:132px 1fr;gap:12px;align-items:center;
+  padding:7px 0;border-bottom:1px solid rgba(34,53,59,.5)}
+.kbrow:last-child{border-bottom:none}
+.kbkeys{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.kbact{font-size:13.5px;color:var(--chalk-dim)}
+
+/* ── PHONE MOCK ──────────────────────────── */
+.phones{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+.phone{
+  background:var(--ink);border:1px solid var(--line);border-radius:14px;
+  padding:12px;position:relative;aspect-ratio:16/9;overflow:hidden;
+}
+.phone-l{
+  position:absolute;top:9px;left:12px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--amber);
+}
+.stickpad{
+  position:absolute;left:22px;bottom:18px;width:56px;height:56px;border-radius:50%;
+  border:1px dashed rgba(230,239,234,.22);
+}
+.stickpad::after{content:'';position:absolute;inset:16px;border-radius:50%;background:rgba(230,239,234,.14)}
+.btns{position:absolute;right:16px;bottom:14px;display:flex;gap:7px;align-items:flex-end}
+.tbtn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  background:var(--panel-2);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:8.5px;color:var(--chalk-dim);text-align:center;line-height:1.15;
+}
+.tbtn.big{width:50px;height:50px;font-size:9.5px;border-color:var(--amber-deep);
+  background:rgba(240,180,41,.14);color:var(--amber)}
+
+/* ── ROADMAP ─────────────────────────────── */
+.phase{
+  border-left:2px solid var(--line);padding:0 0 22px 22px;position:relative;margin-left:8px;
+}
+.phase::before{
+  content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;
+  background:var(--ink);border:2px solid var(--amber);border-radius:50%;
+}
+.phase:last-child{border-left-color:transparent}
+.phase-n{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+.phase-t{font-weight:700;font-size:15.5px;margin:2px 0 7px}
+.phase ul{margin-left:16px;font-size:13.5px;color:var(--chalk-dim)}
+
+/* ── SOURCES ─────────────────────────────── */
+.srcgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+.srccard{
+  background:var(--panel);border:1px solid var(--line);padding:13px 15px;border-radius:2px;
+  display:block;transition:.15s;
+}
+.srccard:hover{border-color:var(--teal);background:var(--panel-2);text-decoration:none}
+.srccard-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.srccard-t{color:var(--chalk);font-weight:600;font-size:14px;margin-bottom:4px}
+.srccard-d{color:var(--chalk-faint);font-size:12.5px;line-height:1.5}
+.hidden{display:none!important}
+.nores{color:var(--chalk-faint);font-family:var(--mono);font-size:12.5px;padding:20px 0}
+
+
+/* ── SLOTS DE REFERÊNCIA ─────────────────── */
+.mec{grid-template-columns:34px 1fr 168px}
+.shot{
+  width:168px;height:100px;border:1px dashed var(--line);border-radius:2px;
+  background:var(--ink);position:relative;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.shot:hover{border-color:var(--amber);background:rgba(240,180,41,.04)}
+.shot.over{border-color:var(--teal);border-style:solid;background:rgba(63,191,168,.1)}
+.shot.filled{border-style:solid;border-color:var(--line);cursor:zoom-in}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot-empty{
+  display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:6px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--chalk-faint);line-height:1.4;
+}
+.shot-ico{font-size:15px;color:var(--line)}
+.shot:hover .shot-ico{color:var(--amber)}
+.shot-get{color:var(--teal);font-size:8.5px;letter-spacing:.06em}
+.shot-del{
+  position:absolute;top:3px;right:3px;width:18px;height:18px;border:none;border-radius:2px;
+  background:rgba(10,16,19,.85);color:var(--chalk-dim);font-size:12px;line-height:1;
+  cursor:pointer;display:none;
+}
+.shot.filled:hover .shot-del{display:block}
+.shot-del:hover{background:var(--flare);color:#fff}
+
+/* ── PAINEL DE COLETA ────────────────────── */
+.refbar{
+  position:sticky;top:64px;z-index:40;margin:0 0 6px;
+  background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);
+  padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.refbar-n{font-family:var(--display);font-size:20px;color:var(--amber);line-height:1}
+.refbar-l{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint)}
+.refbar-bar{flex:1;min-width:100px;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.refbar-fill{height:100%;background:var(--amber);width:0;transition:width .3s}
+.btn{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--chalk-dim);
+  padding:6px 12px;cursor:pointer;border-radius:2px;
+}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn.danger:hover{border-color:var(--flare);color:var(--flare)}
+
+/* ── LIGHTBOX ────────────────────────────── */
+.lightbox{
+  position:fixed;inset:0;z-index:200;background:rgba(6,10,12,.94);
+  display:none;align-items:center;justify-content:center;padding:40px;
+}
+.lightbox.on{display:flex}
+.lightbox img{max-width:92%;max-height:88%;border:1px solid var(--line)}
+.lightbox-x{
+  position:absolute;top:22px;right:26px;background:none;border:1px solid var(--line);
+  color:var(--chalk);font-family:var(--mono);font-size:12px;padding:7px 13px;cursor:pointer;
+}
+.lightbox-cap{
+  position:absolute;bottom:24px;left:0;right:0;text-align:center;
+  font-family:var(--mono);font-size:11px;color:var(--chalk-dim);letter-spacing:.08em;
+}
+@media (max-width:820px){
+  .mec{grid-template-columns:28px 1fr}
+  .shot{width:100%;height:130px;margin-top:10px}
+}
+
+footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;
+  font-family:var(--mono);font-size:11px;color:var(--chalk-faint);letter-spacing:.05em}
+
+@media (max-width:1000px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:1fr 1fr}
+  .phones{grid-template-columns:1fr}
+}
+@media (max-width:820px){
+  .sidenav{position:fixed;left:0;top:64px;z-index:55;transform:translateX(-100%);transition:.22s}
+  .sidenav.open{transform:none}
+  .navtoggle{display:block}
+  .search-wrap{flex-basis:150px}
+  .wrap,.hero{padding-left:20px;padding-right:20px}
+  .g2,.g3,.g4,.srcgrid{grid-template-columns:1fr}
+  .lab-body{grid-template-columns:1fr}
+  .lab-picker{border-right:none;border-bottom:1px solid var(--line);max-height:150px;display:flex;overflow-x:auto}
+  .lab-btn{white-space:nowrap;border-left:none;border-bottom:2px solid transparent}
+  .kbrow{grid-template-columns:1fr}
+  .tbl{font-size:12.5px}
+  .tbl th,.tbl td{padding:8px 7px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-mark">GDD</span>
+    <span class="brand-sub">futebol · roblox</span>
+  </div>
+  <button class="navtoggle" id="navToggle">☰ Seções</button>
+  <div class="search-wrap">
+    <span class="search-ico">⌕</span>
+    <input class="search" id="search" placeholder="buscar mecânica, tecla, sistema…" autocomplete="off">
+  </div>
+</div>
+
+<div class="shell">
+  <nav class="sidenav" id="sidenav">
+    <div class="nav-group">
+      <div class="nav-label">O jogo</div>
+      <a href="#lab">Laboratório de jogadas</a>
+      <a href="#hub">Hub e modos</a>
+      <a href="#regras">Regras da partida</a>
+      <a href="#passe">Passe de temporada</a>
+      <a href="#custom">Customização</a>
+      <a href="#perfil">Perfil e carreira</a>
+      <a href="#loja">Loja e economia</a>
+      <a href="#ranqueada">Ranqueada</a>
+      <a href="#evento">Evento de nações</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">Mecânicas</div>
+      <a href="#refs">Referências visuais</a>
+      <a href="#mec-movimento">Movimento e stamina</a>
+      <a href="#mec-chute">Chute · 10</a>
+      <a href="#mec-passe">Passe · 11</a>
+      <a href="#mec-drible">Drible · 17</a>
+      <a href="#mec-defesa">Defesa · 8</a>
+      <a href="#mec-goleiro">Goleiro · 5</a>
+      <a href="#controles">Mapa de controles</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">Roblox</div>
+      <a href="#netcode">Física e netcode</a>
+      <a href="#mobile">Controles no celular</a>
+      <a href="#arquitetura">Arquitetura de partidas</a>
+      <a href="#dinheiro">Monetização</a>
+      <a href="#roadmap">Escopo por fases</a>
+      <a href="#riscos">Riscos</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">Pesquisa</div>
+      <a href="#fontes">Índice de fontes</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="eyebrow">Documento de design · v0.1 · julho 2026</div>
+      <h1>Um jogo de futebol<br>no Roblox, com a<br><em>profundidade do Rematch</em></h1>
+      <p class="lede">Toda a estrutura do jogo, as 51 variações de jogada levantadas na pesquisa, e o que muda quando isso tudo vira código no Roblox. Cada mecânica tem link direto para a fonte onde estão os vídeos e capturas.</p>
+      <div class="hero-meta">
+        <span class="chip"><b>51</b> variações de jogada</span>
+        <span class="chip"><b>18</b> ações mapeadas</span>
+        <span class="chip"><b>5</b> fases de escopo</span>
+        <span class="chip">referência: <b>Rematch</b> · Sloclap</span>
+      </div>
+    </div>
+
+    <div class="wrap">
+
+<!-- ══ LAB ══ -->
+<section id="lab">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Laboratório de jogadas</h2></div>
+  <p class="sec-intro">As mecânicas do Rematch são sobre <strong>trajetória</strong> e <strong>janela de tempo</strong>. Escolha uma jogada para ver o traçado, a sequência de input e onde ela é vulnerável.</p>
+
+  <div class="lab">
+    <div class="lab-head">
+      <span class="lab-dot"></span>
+      <span class="lab-title">Traçado</span>
+      <span class="lab-hint">clique numa jogada</span>
+    </div>
+    <div class="lab-body">
+      <div class="lab-picker" id="labPicker"></div>
+      <div class="lab-stage">
+        <div class="lab-canvas" id="labCanvas"></div>
+        <div class="lab-info" id="labInfo"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HUB ══ -->
+<section id="hub">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Hub e modos</h2></div>
+  <p class="sec-intro">O menu principal é a espinha do jogo. Tudo o que o jogador faz fora da partida acontece em uma dessas seis abas.</p>
+
+  <div class="grid g3">
+    <div class="card accent">
+      <div class="card-t">Jogar</div>
+      <ul>
+        <li>Partida rápida (casual)</li>
+        <li>Partida ranqueada</li>
+        <li>Partida personalizada</li>
+        <li>Praticar</li>
+        <li>Prólogo</li>
+        <li>Sistema / opções</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-t">Partida personalizada</div>
+      <ul>
+        <li><strong>Entrar com código</strong></li>
+        <li>Criar: Clássico</li>
+        <li>Criar: Fireball</li>
+        <li>Criar: Duelo 1v1</li>
+      </ul>
+      <p style="margin-top:9px">Parâmetros ajustáveis: mercy rule, duração, prorrogação.</p>
+    </div>
+    <div class="card">
+      <div class="card-t">Praticar — workshops</div>
+      <ul>
+        <li><strong>Movimento</strong> — pista de gols, proteger a bola</li>
+        <li><strong>Passe</strong> — acerte a toupeira, aros</li>
+        <li><strong>Defesa</strong> — interceptação</li>
+        <li><strong>Pontuação</strong> — alcance do chute</li>
+        <li><strong>Goleiro</strong> — a muralha</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Os três modos de jogo</h3>
+  <table class="tbl">
+    <tr><th>Modo</th><th>Como funciona</th><th>Por que existe</th></tr>
+    <tr>
+      <td><strong>Clássico</strong></td>
+      <td>Futebol normal. 3v3, 4v4 ou 5v5.</td>
+      <td>O jogo base.</td>
+    </tr>
+    <tr>
+      <td><strong>Fireball</strong></td>
+      <td>Passes e interceptações bem-sucedidos enchem um medidor que <strong>multiplica os pontos do gol</strong>.</td>
+      <td>Força o jogo coletivo. O dilema é: marcar agora ou continuar trocando passes e arriscar perder tudo?</td>
+    </tr>
+    <tr>
+      <td><strong>Duelo 1v1</strong></td>
+      <td>Arena própria, <strong>sem goleiro</strong>. O gol adversário abre devagar quando você entra na área dele — cerca de 8s para abrir de vez, 4s para fechar. Cantos chanfrados para tabela.</td>
+      <td>Testa habilidade pura, sem depender de time.</td>
+    </tr>
+  </table>
+
+  <div class="callout gold">
+    <div class="callout-t">Detalhe que faz o Fireball funcionar</div>
+    <p>O medidor só cresce com <em>passe</em> e <em>interceptação</em> — nunca com drible. Isso é design deliberado: transforma o modo num treinamento disfarçado de jogo coletivo, exatamente o comportamento que um jogo de futebol multiplayer mais precisa ensinar.</p>
+  </div>
+</section>
+
+<!-- ══ REGRAS ══ -->
+<section id="regras">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Regras da partida</h2></div>
+  <p class="sec-intro">O Rematch tirou tudo que interrompe o jogo. É a decisão de design mais importante dele — e a mais fácil de copiar.</p>
+
+  <div class="grid g4">
+    <div class="card"><span class="stat">6</span><span class="stat-l">minutos por partida</span></div>
+    <div class="card"><span class="stat">4</span><span class="stat-l">gols de diferença = fim</span></div>
+    <div class="card"><span class="stat">0</span><span class="stat-l">faltas · cartões · impedimento</span></div>
+    <div class="card"><span class="stat">3–5</span><span class="stat-l">jogadores por time</span></div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Regra</th><th>Como é</th></tr>
+    <tr><td><strong>Arena</strong></td><td>Caixa fechada de vidro. A bola <strong>nunca sai</strong> — não existe lateral, escanteio nem tiro de meta.</td></tr>
+    <tr><td><strong>Paredes</strong></td><td>Jogáveis. Rebote é mecânica central, não acidente.</td></tr>
+    <tr><td><strong>Mercy rule</strong></td><td>4 gols de diferença encerra na hora. Ajustável em partida personalizada.</td></tr>
+    <tr><td><strong>Último chute</strong></td><td>Quando o cronômetro zera, quem está com a bola tem direito a uma última jogada.</td></tr>
+    <tr><td><strong>Prorrogação</strong></td><td>Em caso de empate.</td></tr>
+    <tr><td><strong>Goleiro</strong></td><td><strong>Rodízio automático</strong>: troca a cada gol sofrido. Qualquer jogador pode sair da área e virar líbero a qualquer momento.</td></tr>
+  </table>
+
+  <div class="callout">
+    <div class="callout-t">Por que isso importa para o Roblox</div>
+    <p>Sem lateral e sem impedimento você elimina duas máquinas de estado inteiras, dois conjuntos de animação e todas as decisões de arbitragem. É menos código, menos bug e mais ritmo — exatamente o que um público mais jovem e impaciente precisa.</p>
+  </div>
+</section>
+
+<!-- ══ PASSE DE TEMPORADA ══ -->
+<section id="passe">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Passe de temporada</h2></div>
+  <p class="sec-intro">Três fases sequenciais, duas trilhas, e um sistema de fichas que respeita o tempo do jogador.</p>
+
+  <table class="tbl">
+    <tr><th class="num">#</th><th>Fase</th><th>Fonte de XP</th><th>Categorias</th></tr>
+    <tr><td class="num">01</td><td><strong>Pré-temporada</strong></td><td>Casual + ranqueada</td><td>30</td></tr>
+    <tr><td class="num">02</td><td><strong>Classificatórias</strong></td><td>Ranqueada</td><td>34</td></tr>
+    <tr><td class="num">03</td><td><strong>Campeonato</strong></td><td>Torneios / evento</td><td>36</td></tr>
+  </table>
+
+  <h3>Como o Rematch estrutura o passe</h3>
+  <div class="grid g2">
+    <div class="card accent">
+      <div class="card-t">Estrutura</div>
+      <ul>
+        <li><strong>100 tiers</strong> por temporada, 1 recompensa cada</li>
+        <li><strong>3 capítulos</strong> temáticos</li>
+        <li>Caminhos <strong>ramificados</strong> — você escolhe a ordem, e nenhum caminho bloqueia outro</li>
+        <li>Cada caminho tem <strong>slots de 3, 4 ou 5 tiers</strong>; completar um slot abre o próximo</li>
+      </ul>
+    </div>
+    <div class="card tealb">
+      <div class="card-t">Tier Token — a sacada</div>
+      <p>Acumulando XP você ganha uma <strong>ficha</strong> e gasta onde quiser, quando quiser. Você continua ganhando fichas mesmo com tudo desbloqueado.</p>
+      <p style="margin-top:9px">Resultado: sua sessão nunca é interrompida por popup de recompensa, e nunca existe a sensação de que você jogou de graça.</p>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-t">Atenção — divergência no seu GDD</div>
+    <p>Você planejou travar a fase 2 atrás de <strong>ranqueada exclusiva</strong>. No Rematch os capítulos nunca foram separados por modo, e desde a Temporada 4 nem por tempo — qualquer partida progride.</p>
+    <p>Se travar, o jogador casual encalha na fase 1 e para de evoluir. <strong>Alternativa:</strong> fase aberta a todos, com recompensas exclusivas <em>dentro</em> dela liberadas por missões de ranqueada. Preserva a exclusividade sem matar a progressão.</p>
+  </div>
+</section>
+
+<!-- ══ CUSTOMIZAÇÃO ══ -->
+<section id="custom">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Customização</h2></div>
+  <p class="sec-intro">Quatro camadas: o corpo, a roupa, a animação e o ambiente. Cada uma é um sistema separado.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-t">Roupa</div>
+      <ul>
+        <li><strong>Paletas</strong> — Casa e Visitante, duas cores por conjunto</li>
+        <li>Conjuntos (kits completos)</li>
+        <li>Numeração</li>
+        <li>Blusa · Peça interna · Calças · Roupa de baixo</li>
+        <li>Moletons · Manguitos</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-t">Acessórios</div>
+      <ul>
+        <li>Chuteiras · Meias · Caneleiras</li>
+        <li>Luvas</li>
+        <li><strong>Bola</strong> — equipada pelo jogador</li>
+        <li>Acessório de cabeça</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-t">Corpo e outros</div>
+      <ul>
+        <li>Adornos de cabeça</li>
+        <li>Joias corporais</li>
+        <li>Visual especial</li>
+        <li>Corpo — cabelo, barba, rosto, tatuagem</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <div class="card-t">Animação — duas abas distintas</div>
+      <ul>
+        <li><strong>Comemoração</strong> — dispara <em>após o gol</em> (~20 slots)</li>
+        <li><strong>Clima de vitória</strong> — pose no <em>fim da partida vencida</em> (~16 slots)</li>
+      </ul>
+      <p style="margin-top:9px">São coisas diferentes. Não junte.</p>
+    </div>
+  </div>
+
+  <h3>Estádio e RA</h3>
+  <p>O <strong>estádio</strong> é o mapa. O <strong>RA</strong> é uma skin ambiental por cima dele, com variante Casa e Visitante.</p>
+  <div class="callout">
+    <div class="callout-t">A regra que dá peso ao RA</div>
+    <p>O RA de casa aparece no início da partida. O RA de visitante <strong>só aparece se o time visitante estiver liderando o placar</strong>. É um cosmético que você precisa conquistar dentro da própria partida para mostrar — provocação transformada em sistema.</p>
+  </div>
+</section>
+
+<!-- ══ PERFIL ══ -->
+<section id="perfil">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Perfil e carreira</h2></div>
+  <p class="sec-intro">Duas abas: o que você fez, e como você se apresenta.</p>
+
+  <h4>Carreira — filtros</h4>
+  <p>Todas as temporadas / por temporada · Global · Ranqueada 5v5 · Ranqueada 3v3 · Rápida 5v5 · Rápida 4v4 · Rápida 3v3</p>
+
+  <div class="grid g3">
+    <div class="card accent">
+      <div class="card-t">Experiência</div>
+      <ul>
+        <li>Nível e XP para o próximo</li>
+        <li>Partidas jogadas</li>
+        <li>Tempo total jogado</li>
+        <li>Distância percorrida</li>
+        <li>Vitórias</li>
+        <li>Títulos de MVP</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-t">Defesa</div>
+      <ul>
+        <li>Defesas de goleiro</li>
+        <li>Desarmes</li>
+        <li>Precisão dos desarmes (%)</li>
+        <li>Interceptações</li>
+        <li>Tempo jogado como goleiro</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-t">Ataque</div>
+      <ul>
+        <li>Gols</li>
+        <li>Passes</li>
+        <li>Chutes ao gol</li>
+        <li>Eficiência (%)</li>
+        <li>Assistências</li>
+        <li>Dribles</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Cartão do jogador</h3>
+  <p>Cinco camadas de identidade visual, todas independentes: <strong>Pose</strong> · <strong>Plano de fundo</strong> · <strong>Avatar</strong> · <strong>Banner</strong> · <strong>Título</strong>.</p>
+  <div class="callout gold">
+    <div class="callout-t">Por que 5 camadas e não 1 skin</div>
+    <p>Cinco slots independentes multiplicam a combinatória sem multiplicar o custo de arte. Um jogador com 12 avatares, 10 fundos e 15 títulos tem 1.800 cartões possíveis. É a forma mais barata de dar sensação de identidade única.</p>
+  </div>
+</section>
+
+<!-- ══ LOJA ══ -->
+<section id="loja">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Loja e economia</h2></div>
+
+  <div class="grid g2">
+    <div class="card tealb">
+      <div class="card-t">Cristal / Bloco &nbsp;<span class="tag base">grátis</span></div>
+      <p>Ganho jogando e nas recompensas do passe grátis. Compra itens de qualidade <strong>baixa e média</strong>.</p>
+    </div>
+    <div class="card accent">
+      <div class="card-t">Ouro / Quant &nbsp;<span class="tag novo">pago</span></div>
+      <p>Vem do passe pago, de torneios ou de compra direta. Compra o passe de capitão e os itens de <strong>qualidade alta</strong> — que só podem ser comprados com ela.</p>
+    </div>
+  </div>
+
+  <h4>Abas</h4>
+  <p>Em destaque · Conjuntos · Ambientes</p>
+
+  <table class="tbl">
+    <tr><th>Vende</th><th>Não vende</th></tr>
+    <tr>
+      <td>Mapas e ambientes, bolas, chuteiras, roupas, meias, luvas, poses, comemorações, pacotes temáticos</td>
+      <td><strong>Cosméticos exclusivos de campeonato e de fim de passe.</strong> Esses só saem jogando — é o que dá status a eles</td>
+    </tr>
+  </table>
+
+  <div class="callout gold">
+    <div class="callout-t">A regra de ouro do modelo Rematch</div>
+    <p>Completar todos os tiers do passe pago devolve moeda premium suficiente para comprar o passe da <strong>próxima temporada</strong>. Quem joga bastante paga <strong>uma vez só</strong>. Compromisso declarado: cosmético puro, sem pay-to-win, sem lootbox, sem sistema oculto.</p>
+  </div>
+</section>
+
+<!-- ══ RANQUEADA ══ -->
+<section id="ranqueada">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Ranqueada</h2></div>
+  <p class="sec-intro">Estrutura simples, já balanceada por um jogo ao vivo. Vale copiar quase inteira.</p>
+
+  <div class="grid g4">
+    <div class="card"><span class="stat">5</span><span class="stat-l">nível para desbloquear</span></div>
+    <div class="card"><span class="stat">5</span><span class="stat-l">partidas de posicionamento</span></div>
+    <div class="card"><span class="stat">18</span><span class="stat-l">degraus (6 ligas × 3 div.)</span></div>
+    <div class="card"><span class="stat">100</span><span class="stat-l">RP por divisão</span></div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Item</th><th>Valor</th></tr>
+    <tr><td>Ligas</td><td>Bronze → Prata → Ouro → Platina → Diamante → Elite</td></tr>
+    <tr><td>Posicionamento inicial</td><td>Normalmente entre Bronze 3 e Prata 1</td></tr>
+    <tr><td>Vitória / derrota</td><td>≈ <strong>+20 RP</strong> / <strong>−17 RP</strong> → sobe de divisão a cada ~5 vitórias</td></tr>
+    <tr><td>Promoção entre ligas</td><td>Série melhor de 3 — precisa vencer 2</td></tr>
+    <tr><td>Rebaixamento</td><td>Existe entre divisões</td></tr>
+    <tr><td>Reset de temporada <span class="tag novo">S4</span></td><td>Passou a usar o <em>skill rating</em> interno em vez do ranque anterior. A faixa de ajuste foi ampliada de [−2; +3] para [−3; +6] — quem está longe do ranque real chega nele mais rápido</td></tr>
+  </table>
+</section>
+
+<!-- ══ EVENTO ══ -->
+<section id="evento">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Evento de nações</h2></div>
+  <p class="sec-intro">O melhor modelo existente para a sua aba <strong>Campeonato</strong> — e muito mais barato de operar que torneio manual.</p>
+
+  <div class="grid g2">
+    <div class="card accent">
+      <div class="card-t">Como funciona</div>
+      <ul>
+        <li><strong>32 países</strong>, cada jogador escolhe um</li>
+        <li>Pontos vêm de jogar <strong>ranqueada e casual</strong> — todo mundo contribui sem esforço extra</li>
+        <li>Países com mais pontos avançam de fase</li>
+        <li><strong>6 fases</strong> até a final</li>
+        <li>O foco declarado não é prêmio individual: é a comunidade decidir quem é campeã</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-t">O que o jogador ganha</div>
+      <ul>
+        <li>Escolher o país <strong>já desbloqueia na hora</strong> um conjunto de perfil completo: fundo, banner, avatar e título da bandeira</li>
+        <li>Ao marcar gol, <strong>toca o hino do país escolhido</strong> (desligável nas opções)</li>
+        <li>Bundle grátis de entrada para todos</li>
+        <li>Países mais bem colocados ganham cosmético exclusivo de cartão</li>
+        <li>Recompensa premium de topo no Tier 100</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-t">Por que não fazer torneio manual</div>
+    <p>Torneio organizado por vocês não escala: exige moderação, agendamento e presença. O modelo de evento automático em fases roda sozinho, inclui <strong>todo mundo</strong> jogando o que já joga, e ainda gera identidade de grupo. Deixe o torneio manual estilo Fortnite como camada extra, depois — a aba "Competir" do Fortnite é essencialmente um <em>calendário de eventos</em>, não um sistema de progressão. Boa referência de UI, não de sistema.</p>
+  </div>
+</section>
+
+<!-- ══ REFERÊNCIAS VISUAIS ══ -->
+<section id="refs">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Referências visuais</h2></div>
+  <p class="sec-intro">Cada uma das 51 mecânicas tem um <strong>slot de imagem</strong> ao lado. Você coleta uma vez, fica salvo no navegador, e o site vira seu álbum de referência.</p>
+
+  <div class="grid g3">
+    <div class="card accent">
+      <div class="card-t">1 · Abrir a fonte</div>
+      <p>Clique no link dentro do slot vazio. Ele leva <strong>direto ao trecho da página</strong> onde está a imagem daquela jogada — não ao topo do artigo.</p>
+    </div>
+    <div class="card accent">
+      <div class="card-t">2 · Arrastar</div>
+      <p>Arraste a imagem do site para dentro do slot. Ou clique no slot para escolher um arquivo do computador — serve para print seu do jogo também.</p>
+    </div>
+    <div class="card accent">
+      <div class="card-t">3 · Pronto</div>
+      <p>A imagem fica salva no navegador. Clique nela para ver em tamanho grande. O <span class="key">✕</span> no canto remove.</p>
+    </div>
+  </div>
+
+  <div class="refbar">
+    <div><span class="refbar-n" id="refN">0/51</span><br><span class="refbar-l">coletadas</span></div>
+    <div class="refbar-bar"><div class="refbar-fill" id="refFill"></div></div>
+    <button class="btn" id="expBtn">Exportar</button>
+    <button class="btn" id="impBtn">Importar</button>
+    <button class="btn danger" id="clrBtn">Limpar tudo</button>
+  </div>
+
+  <div class="callout">
+    <div class="callout-t">Por que assim, e não já embutido</div>
+    <p>As capturas pertencem aos veículos e ao estúdio — eu não posso redistribuí-las dentro de um arquivo que eu gero pra você. E imagem puxada do servidor deles quebra assim que ativam bloqueio de link externo, o que é comum. Coletando você mesmo, a imagem fica <strong>no seu computador</strong>, não some, e funciona sem internet.</p>
+    <p>Use <strong>Exportar</strong> antes de trocar de navegador ou de máquina — ele gera um arquivo com todas as imagens que você juntou, e <strong>Importar</strong> traz de volta.</p>
+  </div>
+</section>
+
+<!-- ══ MOVIMENTO ══ -->
+<section id="mec-movimento">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Movimento e stamina</h2></div>
+  <p class="sec-intro">Dois sistemas separados, com barras separadas. Confundir os dois é o erro mais comum de quem tenta copiar esse jogo.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-t">Corrida — barra grande</div>
+      <p>Segurar <span class="key">Shift</span>. Consome a barra maior. Simples.</p>
+    </div>
+    <div class="card accent">
+      <div class="card-t">Esforço extra — barra pequena</div>
+      <p>Toque duplo em <span class="key">Shift</span>, só dispara com a barra cheia. Um burst curto que <strong>não é só velocidade</strong>: dá <strong>prioridade em disputa de bola</strong>.</p>
+      <p style="margin-top:9px">É isso que faz o bladeshot e o backheel rápido existirem. Se você implementar só "corre mais rápido", metade das jogadas avançadas some.</p>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Regra</th><th>Efeito</th></tr>
+    <tr><td><strong>Stamina infinita</strong></td><td>Goleiro e líbero têm stamina ilimitada — até cruzarem o meio-campo ou passarem as luvas</td></tr>
+    <tr><td><strong>Lentidão com a bola</strong></td><td>Você é mais lento conduzindo. Por isso o toque para frente é obrigatório em velocidade</td></tr>
+    <tr><td><strong>Chute em movimento</strong> <span class="tag novo">S4</span></td><td>Chutar correndo passou a deixar o personagem mais lento que antes</td></tr>
+    <tr><td><strong>Chute pós-drible</strong> <span class="tag novo">S4</span></td><td>Velocidade reduzida — era abusado, o personagem deslizava para os lados sem andar</td></tr>
+  </table>
+</section>
+
+<!-- ══ CHUTE ══ -->
+<section id="mec-chute">
+  <div class="sec-head"><span class="sec-num">12</span><h2>Chute · 10 variações</h2></div>
+  <p class="sec-intro">Botão base: <span class="key hot">LMB</span> · <span class="key">RT</span> · <span class="key">R2</span>. A profundidade toda vem de <em>quanto tempo você segura</em> e <em>para onde move o mouse durante a carga</em>.</p>
+  <div class="meclist" data-mec="chute"></div>
+
+  <h4>Os 3 graus de força</h4>
+  <p>Do mais fraco ao mais forte: <strong>bola colada no jogador</strong> → <strong>bola ao alcance</strong> → <strong>bola no ar</strong>. Cada grau é mais potente que o anterior. É por isso que o voleio é a finalização mais letal do jogo.</p>
+</section>
+
+<!-- ══ PASSE ══ -->
+<section id="mec-passe">
+  <div class="sec-head"><span class="sec-num">13</span><h2>Passe · 11 variações</h2></div>
+  <p class="sec-intro">A mecânica mais importante do jogo. O detalhe que muda tudo: você <strong>mira em qualquer direção sem virar o corpo</strong> — passar para trás é mais rápido que girar o personagem.</p>
+  <div class="meclist" data-mec="passe"></div>
+
+  <h4>Princípios de passe</h4>
+  <div class="grid g2">
+    <div class="card">
+      <ul>
+        <li>Passe para <strong>onde o companheiro vai estar</strong>, não onde ele está</li>
+        <li>Passar para trás não é vergonha, é reciclagem de posse</li>
+        <li>Devolver para o goleiro é seguro</li>
+      </ul>
+    </div>
+    <div class="card">
+      <ul>
+        <li>No 5v5, passe <strong>antes</strong> do desarme chegar</li>
+        <li>Depois de passar, se movimente para o espaço</li>
+        <li>Use o radar para achar quem está livre</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>Distribuição do goleiro</h4>
+  <table class="tbl">
+    <tr><th>Input</th><th>Resultado</th></tr>
+    <tr><td><span class="key">LMB</span></td><td>Tiro longo, aceita efeito</td></tr>
+    <tr><td><span class="key">RMB</span></td><td>Rola a bola no chão</td></tr>
+    <tr><td><span class="key">F</span> / <span class="key">X</span></td><td><strong>Arremesso com a mão</strong> — geralmente a opção mais segura</td></tr>
+    <tr><td><span class="key">V</span></td><td>Solta a bola e conduz</td></tr>
+  </table>
+</section>
+
+<!-- ══ DRIBLE ══ -->
+<section id="mec-drible">
+  <div class="sec-head"><span class="sec-num">14</span><h2>Drible e controle · 17 variações</h2></div>
+  <p class="sec-intro">O núcleo <strong>não</strong> é o lençol. É o avanço de bola: um losango azul aparece na bola indicando o momento certo, fica verde se você acertar, e <strong>enquanto ela rola o adversário não consegue desarmar</strong>.</p>
+  <div class="meclist" data-mec="drible"></div>
+
+  <div class="callout">
+    <div class="callout-t">Como o jogo quer que você conduza</div>
+    <p>Toques curtos em velocidade média, contato breve com a bola, câmera à frente. O lençol é bonito mas estatisticamente perde bola — jogador bom pune virando de costas e esperando a bola cair.</p>
+  </div>
+</section>
+
+<!-- ══ DEFESA ══ -->
+<section id="mec-defesa">
+  <div class="sec-head"><span class="sec-num">15</span><h2>Defesa · 8 variações</h2></div>
+  <p class="sec-intro">Sem falta, sem cartão, sem impedimento. O carrinho nunca é punido pelo juiz — só pelo posicionamento que você perdeu.</p>
+  <div class="meclist" data-mec="defesa"></div>
+
+  <div class="grid g2">
+    <div class="callout gold" style="margin:0">
+      <div class="callout-t">Regra de ouro</div>
+      <p>Contra o lençol: <strong>não desarme.</strong> Vire e corra atrás da bola — assim você fica entre o adversário e ela.</p>
+    </div>
+    <div class="callout" style="margin:0">
+      <div class="callout-t">Mudança da Temporada 4</div>
+      <p>Desarme em pé que <strong>não conecta</strong> agora demora um pouco mais para recuperar o controle. Errar passou a ter preço. Desarme certo continua igual.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GOLEIRO ══ -->
+<section id="mec-goleiro">
+  <div class="sec-head"><span class="sec-num">16</span><h2>Goleiro · 5 variações</h2></div>
+  <p class="sec-intro">A posição que mais mudou na Temporada 4. Antes ficar parado em modo defesa era recompensa demais; agora exige leitura.</p>
+  <div class="meclist" data-mec="goleiro"></div>
+
+  <table class="tbl">
+    <tr><th>Regra</th><th>Detalhe</th></tr>
+    <tr><td><strong>Fora da área</strong></td><td>Perde as luvas e vira <strong>líbero</strong> — pode ser desarmado normalmente</td></tr>
+    <tr><td><strong>Dentro da área com a bola</strong></td><td>Ninguém tira</td></tr>
+    <tr><td><strong>Stamina</strong></td><td>Infinita como goleiro e como líbero</td></tr>
+    <tr><td><strong>Rodízio</strong></td><td>Novo goleiro a cada gol sofrido</td></tr>
+    <tr><td><strong>Subir ao meio-campo</strong></td><td>Seguro quando a bola está no campo adversário — dá opção de passe</td></tr>
+  </table>
+
+  <div class="callout danger">
+    <div class="callout-t">O erro clássico</div>
+    <p>Mergulhar cedo demais. Espere o marcador do chute aparecer. Contra tabela na parede, leia <strong>o rebote</strong>, não o corpo do atacante.</p>
+  </div>
+</section>
+
+<!-- ══ CONTROLES ══ -->
+<section id="controles">
+  <div class="sec-head"><span class="sec-num">17</span><h2>Mapa de controles</h2></div>
+  <p class="sec-intro">18 ações, organizadas em cinco contextos. Essa divisão por contexto é a chave para caber no celular depois.</p>
+
+  <div class="tabs" id="kbTabs">
+    <button class="tab on" data-kb="basico">Básico</button>
+    <button class="tab" data-kb="combola">Com bola</button>
+    <button class="tab" data-kb="sembola">Sem bola</button>
+    <button class="tab" data-kb="goleiro">Goleiro</button>
+    <button class="tab" data-kb="espectador">Espectador</button>
+  </div>
+  <div class="tabpanel on" id="kb-basico"></div>
+  <div class="tabpanel" id="kb-combola"></div>
+  <div class="tabpanel" id="kb-sembola"></div>
+  <div class="tabpanel" id="kb-goleiro"></div>
+  <div class="tabpanel" id="kb-espectador"></div>
+</section>
+
+<!-- ══ NETCODE ══ -->
+<section id="netcode">
+  <div class="sec-head"><span class="sec-num">18</span><h2>Física e netcode no Roblox</h2></div>
+  <p class="sec-intro">O item mais crítico do projeto inteiro. Se a bola dessincroniza, as 51 variações de jogada viram loteria.</p>
+
+  <div class="grid g2">
+    <div class="card warn">
+      <div class="card-t">✕ O jeito antigo — não use</div>
+      <p><code style="font-family:var(--mono);font-size:12px;color:var(--flare)">BasePart:SetNetworkOwner()</code></p>
+      <p style="margin-top:9px">Passar a posse da bola para o jogador mais próximo. É o que os jogos de futebol do Roblox usam há anos — e é <strong>exatamente por isso</strong> que eles têm fama de bola teleportando. A troca de dono engasga, e existem relatos ativos de regressão de replicação nessa troca afetando jogos de futebol em 2026. Além disso o cliente dono consegue trapacear.</p>
+    </div>
+    <div class="card accent">
+      <div class="card-t">✓ O jeito certo — Server Authority</div>
+      <p>Lançado para todos os jogos em <strong>julho de 2026</strong>. A comunicação oficial cita física de bola e jogos de esporte como caso de uso principal.</p>
+      <ul style="margin-top:9px">
+        <li>Servidor é a fonte única de verdade</li>
+        <li>Cliente simula <strong>à frente</strong>, sem input lag</li>
+        <li>Errou a previsão? O motor <strong>volta e ressimula</strong> (rollback)</li>
+        <li>De brinde: mata speed hack, fly e noclip</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>O que isso obriga você a fazer</h3>
+  <table class="tbl">
+    <tr><th class="num">#</th><th>Exigência</th><th>Consequência</th></tr>
+    <tr>
+      <td class="num">01</td>
+      <td><strong>Lógica compartilhada</strong> — em funções registradas via <code style="font-family:var(--mono);font-size:12px">RunService:BindToSimulation()</code>, num ModuleScript rodado nos dois lados</td>
+      <td>Define a estrutura do projeto desde o dia 1. <strong>Migrar depois é caro.</strong></td>
+    </tr>
+    <tr>
+      <td class="num">02</td>
+      <td><strong>Nada de Humanoid padrão.</strong> Use os physics controllers (<code style="font-family:var(--mono);font-size:12px">ControllerManager</code>, <code style="font-family:var(--mono);font-size:12px">GroundController</code>)</td>
+      <td>O controlador padrão não dá corrida com stamina, postura de drible nem mudança de inércia</td>
+    </tr>
+    <tr>
+      <td class="num">03</td>
+      <td><strong>Testar com latência real</strong></td>
+      <td>No Studio a latência é zero e tudo parece perfeito. Já foi reportado um solavanco no momento em que a bola sai do jogador — em rede real isso amplifica</td>
+    </tr>
+  </table>
+
+  <div class="callout danger">
+    <div class="callout-t">Verifique antes de commitar</div>
+    <p>Server Authority é API nova e em mudança ativa. Confirme o estado atual na documentação oficial antes de fechar decisões de arquitetura.</p>
+  </div>
+</section>
+
+<!-- ══ MOBILE ══ -->
+<section id="mobile">
+  <div class="sec-head"><span class="sec-num">19</span><h2>Controles no celular</h2></div>
+  <p class="sec-intro">18 ações. Maioria do público no telefone. Você não cabe 18 botões numa tela.</p>
+
+  <div class="callout gold">
+    <div class="callout-t">A solução já está no próprio Rematch</div>
+    <p>Ele separa os controles em <strong>Com bola / Sem bola / Goleiro</strong>. Use isso como HUD literal: os botões trocam sozinhos conforme o estado. Meta: no máximo 5 visíveis por vez. Resultado — 18 ações viram <strong>11 botões</strong> em 3 conjuntos, sem perder nenhuma mecânica.</p>
+  </div>
+
+  <div class="phones">
+    <div class="phone">
+      <span class="phone-l">Sem bola</span>
+      <div class="stickpad"></div>
+      <div class="btns">
+        <div class="tbtn">Postura</div>
+        <div class="tbtn">Pular</div>
+        <div class="tbtn big">Desarme</div>
+        <div class="tbtn">Correr</div>
+      </div>
+    </div>
+    <div class="phone">
+      <span class="phone-l">Com bola</span>
+      <div class="stickpad"></div>
+      <div class="btns">
+        <div class="tbtn">Drible</div>
+        <div class="tbtn">Toque</div>
+        <div class="tbtn">Passe</div>
+        <div class="tbtn big">Chute</div>
+      </div>
+    </div>
+    <div class="phone">
+      <span class="phone-l">Goleiro</span>
+      <div class="stickpad"></div>
+      <div class="btns">
+        <div class="tbtn">Soltar</div>
+        <div class="tbtn">Saída</div>
+        <div class="tbtn big">Mergulho</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>A gramática dos gestos</h3>
+  <table class="tbl">
+    <tr><th>Botão</th><th>Toque</th><th>Segurar</th><th>Deslizar ↑</th></tr>
+    <tr><td><strong>Chute</strong></td><td>toque fraco</td><td>carrega + <strong>arrasta para o Magnus</strong></td><td>—</td></tr>
+    <tr><td><strong>Passe</strong></td><td>rasteiro</td><td>carrega potência</td><td><strong>cobertura (lob)</strong></td></tr>
+    <tr><td><strong>Toque</strong></td><td>avanço de bola</td><td>—</td><td><strong>lençol</strong></td></tr>
+    <tr><td><strong>Drible</strong></td><td>—</td><td>postura</td><td>direção = skill</td></tr>
+    <tr><td><strong>Desarme</strong></td><td>em pé</td><td>—</td><td>deslizar = <strong>carrinho</strong></td></tr>
+    <tr><td><strong>Correr</strong></td><td>—</td><td>corrida</td><td>toque duplo = <strong>boost</strong></td></tr>
+  </table>
+
+  <p>A regra <strong>"deslizar para cima = versão por cima"</strong> é consistente entre passe e toque. Uma regra, duas mecânicas, fácil de ensinar.</p>
+
+  <div class="callout danger">
+    <div class="callout-t">Conflito a resolver</div>
+    <p>Mirar com arrasto enquanto carrega o chute <strong>compete com o arrasto que gira a câmera</strong>. Resolva reservando metade da tela para cada função, ou travando a câmera durante a carga. Prototipe isso no celular <em>antes</em> de escrever o resto do jogo.</p>
+  </div>
+</section>
+
+<!-- ══ ARQUITETURA ══ -->
+<section id="arquitetura">
+  <div class="sec-head"><span class="sec-num">20</span><h2>Arquitetura de partidas</h2></div>
+
+  <div class="card" style="font-family:var(--mono);font-size:12.5px;line-height:1.9;color:var(--chalk-dim);margin:18px 0">
+    <span style="color:var(--amber)">LOBBY</span> — Place principal, público<br>
+    &nbsp;&nbsp;└─ menu · loja · passe · perfil · customização<br>
+    &nbsp;&nbsp;└─ fila de matchmaking<br><br>
+    <span style="color:var(--amber)">PARTIDA</span> — Reserved Server<br>
+    &nbsp;&nbsp;└─ 3v3 · 4v4 · 5v5 · 1v1 · personalizada
+  </div>
+
+  <h4>Fluxo de matchmaking</h4>
+  <table class="tbl">
+    <tr><th class="num">#</th><th>Passo</th></tr>
+    <tr><td class="num">01</td><td>Jogador entra na fila → grava em <strong>MemoryStoreService</strong> (fila compartilhada entre servidores)</td></tr>
+    <tr><td class="num">02</td><td>Um loop lê a fila e monta grupo equilibrado por RP e região</td></tr>
+    <tr><td class="num">03</td><td><strong>TeleportService:ReserveServer()</strong> cria a instância privada</td></tr>
+    <tr><td class="num">04</td><td><strong>TeleportService:TeleportAsync()</strong> leva o grupo junto, com os metadados da partida</td></tr>
+  </table>
+  <p>O código de acesso do servidor reservado é o que impede estranho de entrar — é assim que o <strong>"entrar com código"</strong> da partida personalizada funciona também.</p>
+
+  <h3>Armadilhas conhecidas</h3>
+  <div class="grid g2">
+    <div class="card warn">
+      <div class="card-t">Não existe servidor central</div>
+      <p>Cada instância é isolada. Estado em <code style="font-family:var(--mono)">_G</code> ou em tabela de módulo só existe naquele servidor. A partir de ~50 jogadores simultâneos isso quebra.</p>
+    </div>
+    <div class="card warn">
+      <div class="card-t">MessagingService não é fila confiável</div>
+      <p>Quando o limite por tópico satura, mensagens <strong>somem em silêncio, sem erro</strong>. Nunca use para economia, compra ou pontuação de torneio.</p>
+    </div>
+    <div class="card warn">
+      <div class="card-t">Código de servidor reservado expira</div>
+      <p>Janela de graça de ~30s. Reaproveitar depois disso dá erro em tempo de execução — trate esse caminho.</p>
+    </div>
+    <div class="card warn">
+      <div class="card-t">MemoryStore despeja antes do prazo</div>
+      <p>Sob pressão de memória as chaves mais antigas caem primeiro. Trate como cache volátil, nunca como armazenamento.</p>
+    </div>
+  </div>
+
+  <h4>Onde cada dado mora</h4>
+  <table class="tbl">
+    <tr><th>Dado</th><th>Serviço</th></tr>
+    <tr><td>Perfil, inventário, nível, XP, RP, stats de carreira</td><td><strong>DataStoreService</strong></td></tr>
+    <tr><td>Fila, sessão de partida, estado temporário</td><td><strong>MemoryStoreService</strong></td></tr>
+    <tr><td>Rankings globais</td><td><strong>OrderedDataStore</strong> ou MemoryStore SortedMap</td></tr>
+    <tr><td>Pontuação de torneio entre servidores</td><td>Agregar no DataStore — <strong>nunca</strong> confiar no MessagingService</td></tr>
+  </table>
+
+  <div class="callout danger">
+    <div class="callout-t">Confirme antes de dimensionar</div>
+    <p>Foi reportado em 2026 que os limites de DataStore passaram de <strong>por-servidor</strong> para <strong>por-experiência</strong>, com teto total de armazenamento. Isso muda o dimensionamento de perfil e stats. Verifique na documentação oficial.</p>
+  </div>
+
+  <p><strong>Tamanho do servidor:</strong> 5v5 + reserva + espectadores → cap de 12 a 14. Servidor grande demais estraga a física e o matchmaking.</p>
+</section>
+
+<!-- ══ MONETIZAÇÃO ══ -->
+<section id="dinheiro">
+  <div class="sec-head"><span class="sec-num">21</span><h2>Monetização</h2></div>
+  <p class="sec-intro">O número que muda o planejamento inteiro.</p>
+
+  <div class="grid g3">
+    <div class="card"><span class="stat">70%</span><span class="stat-l">em Robux, após taxa de 30%</span></div>
+    <div class="card"><span class="stat">0,0038</span><span class="stat-l">USD por Robux no DevEx (2026)</span></div>
+    <div class="card accent"><span class="stat">~25–29%</span><span class="stat-l">efetivo em dinheiro real</span></div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-t">Traduzindo</div>
+    <p>Dos R$ 16,99 que o Rematch cobra pelo pacote menor de moedas, no Roblox sobraria <strong>menos de um terço</strong>. É a fatia mais baixa entre as grandes plataformas — em troca você ganha hospedagem, distribuição, multiplataforma e uma audiência gigante de graça. <strong>Precifique com 25%.</strong></p>
+  </div>
+
+  <h3>Mapeando suas duas moedas</h3>
+  <table class="tbl">
+    <tr><th>Sua moeda</th><th>Implementação</th></tr>
+    <tr><td><strong>Cristal / azul</strong></td><td>Valor puro em DataStore. Zero relação com Robux</td></tr>
+    <tr><td><strong>Ouro / dourado</strong></td><td><strong>Developer Product</strong> — consumível, compra repetida. Um produto por pacote (500 / 1.100 / 2.400 / 4.500)</td></tr>
+    <tr><td><strong>Passe de Capitão</strong></td><td>Duas opções: <em>Game Pass</em> por temporada (permanente, exige criar um novo a cada temporada) ou <em>Developer Product</em> que credita um "ticket de upgrade" no DataStore. <strong>Prefira a segunda</strong> — replica o ticket guardável do Rematch e não polui sua lista de passes</td></tr>
+  </table>
+
+  <h4>Canais extras que valem empilhar</h4>
+  <div class="grid g2">
+    <div class="card tealb">
+      <div class="card-t">Creator Rewards</div>
+      <p>Paga em Robux por <strong>tempo de jogo</strong> de usuários ativos, mesmo de quem nunca gasta. Para um jogo competitivo com sessão longa, isso pode virar uma linha grande de receita.</p>
+    </div>
+    <div class="card tealb">
+      <div class="card-t">Assinatura in-experience</div>
+      <p>Cobrança recorrente em Robux. Combina bem com passe de temporada e suaviza o padrão festa-ou-fome dos game passes.</p>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-t">Restrição recente — 29/05/2026</div>
+    <p>O Roblox desativou a <strong>venda cross-game</strong> de Game Passes e Developer Products. Se você planejava vários Places compartilhando loja, isso não funciona mais. Mantenha tudo dentro de uma experiência só.</p>
+  </div>
+</section>
+
+<!-- ══ ROADMAP ══ -->
+<section id="roadmap">
+  <div class="sec-head"><span class="sec-num">22</span><h2>Escopo por fases</h2></div>
+  <p class="sec-intro">O Rematch é feito por dezenas de pessoas em Unreal Engine 5, com anos de beta. Não tente lançar o GDD inteiro.</p>
+
+  <div style="margin:24px 0">
+    <div class="phase">
+      <div class="phase-n">Fase 1 · MVP</div>
+      <div class="phase-t">O jogo precisa ser gostoso antes de ser bonito</div>
+      <ul>
+        <li>1 arena · <strong>3v3 apenas</strong></li>
+        <li>Passe rasteiro, cobertura, chute com Magnus, voleio, avanço de bola, desarme em pé, carrinho, goleiro com mergulho</li>
+        <li>Mercy rule, 6 minutos, rodízio de goleiro</li>
+        <li>Partida rápida e sala com código</li>
+        <li><strong>Zero customização paga</strong></li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-n">Fase 2</div>
+      <div class="phase-t">Progressão</div>
+      <ul><li>Nível, XP, stats de carreira, 5v5, mais 2 arenas, customização básica com moeda azul</li></ul>
+    </div>
+    <div class="phase">
+      <div class="phase-n">Fase 3</div>
+      <div class="phase-t">Competição</div>
+      <ul><li>Ranqueada, matchmaking próprio, cartão de jogador</li></ul>
+    </div>
+    <div class="phase">
+      <div class="phase-n">Fase 4</div>
+      <div class="phase-t">Economia</div>
+      <ul><li>Passe de temporada, loja, moeda paga</li></ul>
+    </div>
+    <div class="phase">
+      <div class="phase-n">Fase 5</div>
+      <div class="phase-t">Eventos</div>
+      <ul><li>Evento de nações, espectador, Duelo 1v1, Fireball</li></ul>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-t">O teste do MVP</div>
+    <p>Se as mecânicas da Fase 1 não estiverem <strong>gostosas</strong>, nenhuma quantidade de cosmético salva o jogo.</p>
+  </div>
+</section>
+
+<!-- ══ RISCOS ══ -->
+<section id="riscos">
+  <div class="sec-head"><span class="sec-num">23</span><h2>Riscos</h2></div>
+  <table class="tbl">
+    <tr><th>Risco</th><th>Gravidade</th><th>Mitigação</th></tr>
+    <tr><td><strong>Bola dessincronizada arruinando o timing</strong></td><td style="color:var(--flare)">Fatal</td><td>Server Authority desde o dia 1. Não é opcional</td></tr>
+    <tr><td><strong>Controles não caberem no celular</strong></td><td style="color:var(--flare)">Alto</td><td>Conjuntos contextuais + gestos. Prototipe no telefone antes de tudo</td></tr>
+    <tr><td><strong>Arquitetura escrita sem Server Authority e migrada depois</strong></td><td style="color:var(--flare)">Alto</td><td>ModuleScript compartilhado desde o começo</td></tr>
+    <tr><td><strong>Volume de animação estourar o prazo</strong></td><td style="color:var(--amber)">Médio</td><td>Passa de 80 animações. Corte comemorações do MVP. Use paleta de cor em vez de mesh nova</td></tr>
+    <tr><td><strong>Receita real ser ~1/4 do esperado</strong></td><td style="color:var(--amber)">Médio</td><td>Precifique com 25%. Empilhe Creator Rewards e assinatura</td></tr>
+  </table>
+</section>
+
+<!-- ══ FONTES ══ -->
+<section id="fontes">
+  <div class="sec-head"><span class="sec-num">24</span><h2>Índice de fontes</h2></div>
+  <p class="sec-intro">Cada link abaixo é onde estão as <strong>capturas, diagramas e vídeos</strong> das mecânicas. Não embuti as imagens porque são material protegido dos sites e do estúdio, e link direto some quando o servidor deles bloqueia — os links levam você direto ao ponto.</p>
+  <div class="srcgrid" id="srcGrid"></div>
+</section>
+
+<footer>
+  GDD v0.1 · compilado em julho de 2026 · referência: Rematch (Sloclap / Kepler Interactive)<br>
+  Server Authority e limites de DataStore mudam rápido — reconfira na documentação oficial do Roblox.
+</footer>
+
+    </div>
+  </main>
+</div>
+
+<script>
+/* ═══ FONTES ═══ */
+const S={
+ gr_mec:{l:'GameRant · mecânicas',u:'https://gamerant.com/all-every-rematch-mechanic-explained/'},
+ gr_passe:{l:'GameRant · passe',u:'https://gamerant.com/rematch-how-pass-guide/'},
+ gr_gol:{l:'GameRant · gols',u:'https://gamerant.com/rematch-how-score-goals/'},
+ gr_def:{l:'GameRant · defesa',u:'https://gamerant.com/rematch-better-defender-guide/'},
+ gr_ctrl:{l:'GameRant · controle de bola',u:'https://gamerant.com/rematch-how-control-ball/'},
+ gr_1v1:{l:'GameRant · 1v1',u:'https://gamerant.com/rematch-1-v-1-how-win-tips/'},
+ gr_rank:{l:'GameRant · ranqueada',u:'https://gamerant.com/rematch-ranks-ranked-mode-explained/'},
+ dex_skill:{l:'Dexerto · skill moves',u:'https://www.dexerto.com/gaming/all-rematch-skill-moves-inputs-3216130/'},
+ tg_tips:{l:'TheGamer · dicas',u:'https://www.thegamer.com/rematch-beginner-tips/'},
+ tg_def:{l:'TheGamer · defesa e goleiro',u:'https://www.thegamer.com/rematch-defense-pro-tips-goalkeeper-guide/'},
+ gra_gk:{l:'GamesRadar · goleiro',u:'https://www.gamesradar.com/games/sports/rematch-goalkeeper-guide/'},
+ gra_tips:{l:'GamesRadar · essenciais',u:'https://www.gamesradar.com/games/sports/rematch-tips/'},
+ ds_gk:{l:'DualShockers · goleiro',u:'https://www.dualshockers.com/rematch-how-to-play-goalkeeper/'},
+ ds_def:{l:'DualShockers · defensor',u:'https://www.dualshockers.com/rematch-how-to-play-defender/'},
+ ds_dri:{l:'DualShockers · dribles',u:'https://www.dualshockers.com/rematch-how-to-do-all-dribble-skill-moves/'},
+ os_blade:{l:'Operation Sports · bladeshot',u:'https://www.operationsports.com/how-to-lob-the-ball-to-yourself-and-perform-a-blade-shot-in-rematch/'},
+ gam3s:{l:'GAM3S · chute avançado',u:'https://gam3s.gg/rematch/guides/rematch-shooting-advanced-techniques-to-score-more-goals/'},
+ rg_tir:{l:'Rematch Guide · chute',u:'https://rematch-guide.com/tir'},
+ rg_dri:{l:'Rematch Guide · drible',u:'https://rematch-guide.com/dribbles'},
+ rg_def:{l:'Rematch Guide · defesa',u:'https://rematch-guide.com/defense'},
+ del_dri:{l:'Deltia · drible',u:'https://deltiasgaming.com/rematch-how-to-dribble/'},
+ del_def:{l:'Deltia · defesa',u:'https://deltiasgaming.com/rematch-best-tips-for-defending/'},
+ sk_blade:{l:'Sportskeeda · bladeshot',u:'https://www.sportskeeda.com/esports/rematch-guide-how-bladeshot'},
+ s4:{l:'Sloclap · patch S4.0',u:'https://www.playrematch.com/post/s4-0-patch-notes-1-204-000'},
+ yt_pass:{l:'YouTube · guia de passe',u:'https://www.youtube.com/watch?v=3XmJ2aNdi88'},
+ yt_pass2:{l:'YouTube · tipos de passe',u:'https://www.youtube.com/watch?v=ghWQYcfDcjk'},
+ gx_skill:{l:'Gameranx · skill moves',u:'https://gameranx.com/features/id/544903/article/rematch-how-to-do-all-skill-moves/'},
+ tb_skill:{l:'Turtle Beach · skill moves',u:'https://www.turtlebeach.com/blog/all-skill-moves-in-rematch'},
+ sk_rainbow:{l:'Sportskeeda · lençol',u:'https://www.sportskeeda.com/esports/rematch-guide-how-rainbow-flick'},
+ steam_fake:{l:'Steam · tutorial chute falso',u:'https://steamcommunity.com/sharedfiles/filedetails/?id=3510042459'},
+ yt_fake:{l:'YouTube · chute falso',u:'https://www.youtube.com/watch?v=JnmrrWdqyHU'}
+};
+
+/* ═══ LINKS DIRETOS ATÉ A IMAGEM (âncora na página) ═══ */
+const GRM='https://gamerant.com/all-every-rematch-mechanic-explained/';
+const GRP='https://gamerant.com/rematch-how-pass-guide/';
+const REF={
+ 'Chute normal':{u:GRM+'#how-to-shoot-amp-curve-the-ball-in-rematch',l:'GameRant'},
+ 'Efeito Magnus':{u:GRM+'#how-to-shoot-amp-curve-the-ball-in-rematch',l:'GameRant'},
+ 'Voleio':{u:GRM+'#how-to-perform-a-volley-in-rematch',l:'GameRant'},
+ 'Chute falso':{u:'https://www.youtube.com/watch?v=JnmrrWdqyHU',l:'vídeo'},
+ 'Bladeshot / bicicleta':{u:'https://www.operationsports.com/how-to-lob-the-ball-to-yourself-and-perform-a-blade-shot-in-rematch/',l:'Op. Sports'},
+ 'Chute na parede / backboard':{u:'https://rematch-guide.com/tir',l:'Rematch Guide'},
+ 'Chute alto proposital':{u:'https://gamerant.com/rematch-how-score-goals/',l:'GameRant'},
+ 'Chute de primeira':{u:'https://rematch-guide.com/tir',l:'Rematch Guide'},
+ 'Cabeceada ao gol':{u:GRM+'#how-to-perform-a-header-in-rematch',l:'GameRant'},
+ 'Cavadinha':{u:'https://gamerant.com/rematch-how-score-goals/',l:'GameRant'},
+ 'Toque — passe rasteiro':{u:GRP+'#how-to-pass-in-rematch',l:'GameRant'},
+ 'Toque leve':{u:GRP+'#how-to-pass-in-rematch',l:'GameRant'},
+ 'Cobertura — lob pass':{u:GRM+'#how-to-lob-pass-in-rematch',l:'GameRant'},
+ 'Toque leve com cobertura':{u:GRM+'#how-to-lob-pass-in-rematch',l:'GameRant'},
+ 'Passe com o botão de chute':{u:GRP+'#how-to-pass-in-rematch',l:'GameRant'},
+ 'Cabeceada':{u:GRM+'#how-to-perform-a-header-in-rematch',l:'GameRant'},
+ 'Tabela na parede':{u:GRP+'#tips-for-passing-in-rematch',l:'GameRant'},
+ 'Um-dois':{u:'https://www.youtube.com/watch?v=3XmJ2aNdi88',l:'vídeo'},
+ 'Passe de costas / calcanhar':{u:GRP+'#how-to-pass-in-rematch',l:'GameRant'},
+ 'Passe-voleio':{u:GRM+'#how-to-perform-a-volley-in-rematch',l:'GameRant'},
+ 'Buffer de input':{u:'https://gamerant.com/rematch-how-control-ball/',l:'GameRant'},
+ 'Drible base':{u:'https://www.thegamer.com/rematch-beginner-tips/',l:'TheGamer'},
+ 'Postura de drible':{u:GRM+'#how-to-use-skills-in-rematch',l:'GameRant'},
+ 'Drible na postura':{u:GRM+'#how-to-use-skills-in-rematch',l:'GameRant'},
+ 'Avanço de bola':{u:GRM+'#how-to-move-faster-with-the-ball-in-rematch',l:'GameRant'},
+ 'Lençol — avanço com cobertura':{u:GRM+'#how-to-rainbow-flick-in-rematch',l:'GameRant'},
+ 'Chapéu para trás':{u:GRM+'#how-to-turn-back-over-the-head-in-rematch',l:'GameRant'},
+ 'Ronaldo chop':{u:GRM+'#how-to-ronaldo-chop-in-rematch',l:'GameRant'},
+ 'Roleta 360°':{u:GRM+'#how-to-use-skills-in-rematch',l:'GameRant'},
+ 'Puxeta — drag back':{u:'https://www.dexerto.com/gaming/all-rematch-skill-moves-inputs-3216130/',l:'Dexerto'},
+ 'Embaixadinha':{u:'https://www.dualshockers.com/rematch-how-to-do-all-dribble-skill-moves/',l:'DualShockers'},
+ 'Controle / primeiro toque':{u:'https://gamerant.com/rematch-how-control-ball/',l:'GameRant'},
+ 'Parar a bola seco':{u:'https://www.thegamer.com/rematch-beginner-tips/',l:'TheGamer'},
+ 'Blurry moves':{u:'https://rematch-guide.com/dribbles',l:'Rematch Guide'},
+ 'Cancelar o lag':{u:'https://rematch-guide.com/dribbles',l:'Rematch Guide'},
+ 'Virada rápida':{u:'https://rematch-guide.com/dribbles',l:'Rematch Guide'},
+ 'Backheel de esforço extra':{u:'https://rematch-guide.com/dribbles',l:'Rematch Guide'},
+ 'Ciclo de condução':{u:'https://rematch-guide.com/dribbles',l:'Rematch Guide'},
+ 'Posição de defesa':{u:'https://deltiasgaming.com/rematch-best-tips-for-defending/',l:'Deltia'},
+ 'Investida — dash lateral':{u:GRM+'#how-to-stand-tackle-in-rematch',l:'GameRant'},
+ 'Desarme em pé':{u:GRM+'#how-to-stand-tackle-in-rematch',l:'GameRant'},
+ 'Carrinho':{u:GRM+'#how-to-slide-tackle-in-rematch',l:'GameRant'},
+ 'Mergulho / pulo':{u:GRM+'#how-to-perform-a-header-in-rematch',l:'GameRant'},
+ 'Cabeceada defensiva':{u:GRM+'#how-to-perform-a-header-in-rematch',l:'GameRant'},
+ 'Interceptação por leitura':{u:'https://rematch-guide.com/defense',l:'Rematch Guide'},
+ 'Body block':{u:'https://rematch-guide.com/defense',l:'Rematch Guide'},
+ 'Modo defesa':{u:GRM+'#how-to-dive-as-a-goalkeeper-in-rematch',l:'GameRant'},
+ 'Mergulho':{u:GRM+'#how-to-dive-as-a-goalkeeper-in-rematch',l:'GameRant'},
+ 'Carrinho do goleiro':{u:GRM+'#how-to-dive-as-a-goalkeeper-in-rematch',l:'GameRant'},
+ 'Avanço de bola do goleiro':{u:GRM+'#how-to-distribute-the-ball-as-a-goalkeeper-in-rematch',l:'GameRant'},
+ 'Distribuição':{u:GRM+'#how-to-distribute-the-ball-as-a-goalkeeper-in-rematch',l:'GameRant'}
+};
+
+/* ═══ MECÂNICAS ═══ */
+const MEC={
+chute:[
+ {t:'Chute normal',tag:'base',d:'Segurar carrega. Carga total chega a ~140 km/h com wind-up de ~0,6s. Toque curto (~0,45s) sai rápido, mas fraco — em compensação recupera antes.',k:['LMB'],s:['gam3s','gr_mec']},
+ {t:'Efeito Magnus',tag:'base',d:'Mover o mouse durante a carga. <b>Lateral</b> curva e contorna o goleiro · <b>para baixo</b> a bola cai rápido, pesadelo para goleiro recuando · <b>para cima</b> aumenta o alcance (melhor para lançamento que para chute) · <b>diagonal</b> gera trajetória híbrida, boa para rebote.',k:['LMB','+ mouse'],s:['gr_mec','rg_tir']},
+ {t:'Voleio',tag:'avan',d:'Chutar entre <b>0,3 e 0,6s antes</b> da bola tocar o chão. Um <b>triângulo aparece sobre a bola</b> indicando a janela. É o chute mais rápido e mais letal do jogo.',k:['LMB'],s:['gr_mec','gra_tips']},
+ {t:'Chute falso',tag:'novo',d:'Durante a carga, cancelar antes de soltar. Direção controlável com o movimento. <b>Gasta stamina</b> — com pouca stamina sai uma versão lenta e visivelmente cansada.',k:['LMB','→','RMB'],s:['s4']},
+ {t:'Bladeshot / bicicleta',tag:'avan',d:'Avanço de bola → lob curto para si mesmo → esforço extra para alcançar → chute na queda. Finalização espetacular, melhor na diagonal ao gol.',k:['Espaço','→','X','→','Shift ×2','→','LMB'],s:['os_blade','sk_blade']},
+ {t:'Chute na parede / backboard',tag:'avan',d:'Mirar na parede lateral ou de fundo com efeito. O rebote é imprevisível e o goleiro se vende. Quanto mais alto o backboard, mais longe a bola volta.',k:['LMB','+ mouse'],s:['rg_tir','gra_tips']},
+ {t:'Chute alto proposital',tag:'avan',d:'Mirar deliberadamente por cima do gol. O goleiro mergulha, a bola volta da parede e o companheiro finaliza no gol vazio. Tática consagrada em ranqueada.',k:['LMB'],s:['gr_gol','gra_tips']},
+ {t:'Chute de primeira',tag:'avan',d:'Segurar o botão <b>antes</b> de alcançar a bola (buffer) e dar o toque. Finaliza sem controle prévio, sem dar tempo à defesa se posicionar.',k:['LMB (segurar antes)'],s:['rg_tir']},
+ {t:'Cabeceada ao gol',tag:'base',d:'Usar o botão de <b>passe</b> com a bola no ar. Cabeceio conta como finalização, e mira em qualquer direção sem precisar olhar.',k:['RMB'],s:['gr_mec']},
+ {t:'Cavadinha',tag:'base',d:'Não existe chute cavado dedicado. Quando o goleiro sai do gol, usa-se o <b>passe por cobertura</b> como substituto funcional.',k:['F'],s:['gr_gol']}
+],
+passe:[
+ {t:'Toque — passe rasteiro',tag:'base',d:'Segurar aumenta a potência. <b>Mira em qualquer direção sem virar o corpo</b> — dá para mudar a direção durante a carga. Chega no chão, mais fácil de controlar.',k:['RMB'],s:['gr_passe','yt_pass2']},
+ {t:'Toque leve',tag:'base',d:'Passe curto e controlado. Ideal para tabela em espaço apertado ou quando o companheiro está colado.',k:['Espaço','+','RMB'],s:['gr_passe']},
+ {t:'Cobertura — lob pass',tag:'base',d:'Mesma lógica do passe normal, mas põe a bola no ar. Cruzamento, lançamento, e passar por cima da marcação quando você está cercado.',k:['F'],s:['gr_mec','gr_passe']},
+ {t:'Toque leve com cobertura',tag:'base',d:'Lob curto e suave. É o ingrediente do bladeshot — o lob normal vai longe demais para você mesmo alcançar.',k:['X'],s:['os_blade']},
+ {t:'Passe com o botão de chute',tag:'avan',d:'O chute mais forte do jogo usado como passe: lançamento longo, afastamento, cruzamento veloz. Aceita efeito. <b>Desvantagem: você precisa estar olhando para o destino.</b>',k:['LMB'],s:['gr_passe']},
+ {t:'Cabeceada',tag:'base',d:'Botão de passe com a bola no ar. Usando o botão de cobertura, a cabeceada sai mais alta. Excelente na defesa contra lançamento e cruzamento.',k:['RMB'],s:['gr_mec']},
+ {t:'Tabela na parede',tag:'avan',d:'Passar ou chutar na parede, para si mesmo ou para o companheiro. Trajetória <b>alta e com potência baixa</b> reduz a chance de interceptação.',k:['RMB','ou','LMB'],s:['rg_dri','gra_tips']},
+ {t:'Um-dois',tag:'avan',d:'Passa, corre por trás do marcador e recebe de volta. A base do jogo coletivo — e o que o modo Fireball existe para ensinar.',k:['RMB','+ movimento'],s:['yt_pass']},
+ {t:'Passe de costas / calcanhar',tag:'avan',d:'Mirar para trás sem virar o personagem. <b>Muito mais rápido que girar</b>. Essencial para sair do canto e para afastar sob pressão.',k:['RMB','+ direção'],s:['gr_passe']},
+ {t:'Passe-voleio',tag:'avan',d:'Passar de primeira com a bola no ar, no timing do voleio. Mantém a jogada em velocidade máxima.',k:['RMB'],s:['gr_mec']},
+ {t:'Buffer de input',tag:'avan',d:'Segurar o botão <b>antes</b> de chegar na bola. O personagem gruda nela e executa direto, sem dar o controle. Vale para passe, cobertura e chute.',k:['segurar antes'],s:['gr_passe','gr_ctrl']}
+],
+drible:[
+ {t:'Drible base',tag:'base',d:'Mover para os lados com a bola. <b>Não precisa de postura nenhuma</b> — já desloca o marcador. A maioria dos iniciantes não sabe disso.',k:['A','D'],s:['tg_tips']},
+ {t:'Postura de drible',tag:'base',d:'Mais lento, bola colada no pé, habilita todas as skills. Solta a qualquer momento para arrancar.',k:['Ctrl (segurar)'],s:['del_dri','gr_mec']},
+ {t:'Drible na postura',tag:'base',d:'A skill padrão dentro da postura. Move a bola mantendo controle total.',k:['Ctrl','+','Espaço'],s:['gr_mec']},
+ {t:'Avanço de bola',tag:'base',d:'O toque para frente. Um <b>losango azul</b> aparece na bola indicando o momento — fica <b>verde</b> se acertar. A força varia se você está andando ou correndo. <b>Enquanto a bola rola, o adversário não consegue desarmar</b>: a tentativa atravessa.',k:['Espaço'],s:['gr_mec','gr_ctrl','rg_dri']},
+ {t:'Lençol — avanço com cobertura',tag:'base',d:'Levanta a bola por cima do marcador. A distância varia com a corrida. Risco: você perde controle e fica exposto — bom contra quem dá carrinho, ruim contra jogador experiente.',k:['C'],s:['dex_skill','ds_dri']},
+ {t:'Chapéu para trás',tag:'avan',d:'Mesmo botão do lençol, andando para trás. Foca em <b>manter posse</b>, não em avançar. Também escapa de carrinho.',k:['C','+ trás'],s:['dex_skill']},
+ {t:'Ronaldo chop',tag:'base',d:'Mudança brusca de direção sob pressão do marcador.',k:['Espaço','+ lado'],s:['dex_skill','gr_mec']},
+ {t:'Roleta 360°',tag:'avan',d:'Gira em torno do marcador. <b>Só funciona na postura lenta</b> — ótimo em espaço apertado, ruim para explorar espaço nas costas.',k:['Ctrl','+','Espaço ×2'],s:['dex_skill','del_dri']},
+ {t:'Puxeta — drag back',tag:'avan',d:'Puxa a bola para trás. Soltar a postura e ir para frente logo em seguida vira arrancada.',k:['Ctrl','+ trás'],s:['dex_skill','tg_tips']},
+ {t:'Embaixadinha',tag:'avan',d:'Mantém a bola no alto para armar voleio. Encadeia com lençol.',k:['C (bola no ar)'],s:['dex_skill']},
+ {t:'Controle / primeiro toque',tag:'base',d:'Parar exatamente onde a bola cai controla sem precisar tocar. Também dá para angular o toque para arrancar na direção que quiser.',k:['Espaço'],s:['gr_ctrl','tg_tips']},
+ {t:'Parar a bola seco',tag:'avan',d:'Trava a bola no lugar instantaneamente. Boa contra quem antecipa a sua corrida.',k:['Ctrl','+','Espaço'],s:['tg_tips']},
+ {t:'Blurry moves',tag:'avan',d:'Tocar e soltar a postura repetidamente enquanto anda. Confunde a leitura do marcador.',k:['Ctrl (repetido)'],s:['rg_dri']},
+ {t:'Cancelar o lag',tag:'avan',d:'Chutar, passar ou empurrar logo após dois dribles corta a animação de recuperação.',k:['2 dribles','→','ação'],s:['rg_dri']},
+ {t:'Virada rápida',tag:'avan',d:'Entrar na postura por um instante e dar dash para frente. <b>O jeito mais rápido de mudar de direção sem perder momento.</b>',k:['Ctrl (toque)','+','Espaço'],s:['rg_dri']},
+ {t:'Backheel de esforço extra',tag:'avan',d:'Correr até a bola, acionar o esforço extra pouco antes do contato e puxar para trás. A bola sai atrás de você instantaneamente. Favorito dos jogadores de topo.',k:['Shift ×2','+ trás'],s:['rg_dri']},
+ {t:'Ciclo de condução',tag:'avan',d:'Tocar sem correr → correr → tocar de novo sem correr. Mais controle e muito menos risco de perder a bola que conduzir em velocidade máxima.',k:['Espaço','Shift','Espaço'],s:['rg_dri','gr_ctrl']}
+],
+defesa:[
+ {t:'Posição de defesa',tag:'base',d:'Passos controlados, corpo de frente, espelhando o atacante. É a base de tudo na defesa.',k:['Ctrl (segurar)'],s:['del_def','gr_def']},
+ {t:'Investida — dash lateral',tag:'base',d:'Dentro da postura, fecha distância rápido e intercepta a linha de passe. Use quando o adversário tentar passar ou driblar para o lado.',k:['C'],s:['gr_def','tg_def']},
+ {t:'Desarme em pé',tag:'base',d:'<b>O pão com manteiga da defesa.</b> Baixo risco, errar custa pouco. Também <b>bloqueia passes rasteiros no instante em que saem</b>. <span class="tag novo">S4</span> errar agora demora um pouco mais para recuperar.',k:['E'],s:['gr_def','ds_def','s4']},
+ {t:'Carrinho',tag:'avan',d:'Alto risco, alta recompensa. Cobre muita distância. Errar custa stamina, tempo e posicionamento. Bom para fechar de trás em quem vai chutar, ou disputar bola solta.',k:['Shift','+','E'],s:['gr_def','del_def']},
+ {t:'Mergulho / pulo',tag:'base',d:'Salta para bloquear cruzamento, lançamento ou o tiro do goleiro adversário.',k:['Q'],s:['tg_tips','gr_mec']},
+ {t:'Cabeceada defensiva',tag:'base',d:'Afasta bolas altas, mirando em qualquer direção. É o mesmo botão do passe.',k:['RMB'],s:['tg_def','gr_passe']},
+ {t:'Interceptação por leitura',tag:'avan',d:'Ler a postura do adversário, ficar na linha de passe e <b>deixar a bola vir</b>. Uma boa interceptação vira contra-ataque na hora.',k:['posicionamento'],s:['rg_def','gr_def']},
+ {t:'Body block',tag:'avan',d:'Usar o corpo para atrasar o adversário e dar tempo ao time se reposicionar. Não precisa tirar a bola para ser útil.',k:['posicionamento'],s:['rg_def']}
+],
+goleiro:[
+ {t:'Modo defesa',tag:'novo',d:'Postura para bolas que vêm direto. <b>Mudança S4:</b> à queima-roupa ele agora <b>rebate em vez de segurar</b> — a jogada não reseta mais tão fácil, e saber quando mergulhar ficou muito mais importante.',k:['Ctrl (segurar)'],s:['s4','gra_gk']},
+ {t:'Mergulho',tag:'novo',d:'Antecipar a trajetória e escolher o lado. <b>S4:</b> hitbox reduzida (menos magnetismo), agora rebate também com as pernas, e a trajetória do rebote foi ajustada para <b>não voltar para dentro do gol</b>.',k:['Espaço','+ direção'],s:['s4','gra_gk','ds_gk']},
+ {t:'Carrinho do goleiro',tag:'novo',d:'Sai e varre a bola nos pés do atacante. <b>S4:</b> ficou um pouco mais rápido.',k:['E'],s:['s4','gr_mec']},
+ {t:'Avanço de bola do goleiro',tag:'base',d:'Solta a bola e conduz. Cuidado: fora da área você perde as luvas.',k:['V'],s:['gr_mec']},
+ {t:'Distribuição',tag:'base',d:'Três opções: tiro longo com efeito, rolada rasteira, ou <b>arremesso com a mão</b> — geralmente a mais segura em partidas de ranque alto.',k:['LMB','RMB','F'],s:['gr_mec','ds_gk']}
+]};
+
+/* ═══ CONTROLES ═══ */
+const KB={
+basico:[['TAB','Exibir placar'],['Mouse','Mover câmera'],['R','Olhar para a bola'],['W A S D','Movimento'],
+ ['Shift esq.','Corrida'],['Shift esq. ×2','Esforço extra'],['Botão do meio','Pedir a bola'],
+ ['1','Diga "É tudo nosso"'],['2','Diga "Mandou bem"'],['3','Diga "Desculpe"'],['4','Diga "Valeu!"']],
+combola:[['LMB','Chute'],['Mouse (ao chutar)','Efeito Magnus'],['RMB (enquanto chuta)','Chute falso'],
+ ['RMB','Tocar — passe'],['Espaço + RMB','Toque leve'],['Espaço','Avanço de bola'],
+ ['C','Avanço com cobertura — lençol'],['F','Cobertura — lob'],['X','Toque leve com cobertura'],
+ ['Ctrl esq.','Postura de drible'],['Espaço','Drible (na postura)']],
+sembola:[['Shift esq. + E','Carrinho'],['C','Investida (na postura defensiva)'],
+ ['Ctrl esq.','Posição de defesa'],['Q','Mergulhar']],
+goleiro:[['E','Carrinho do goleiro'],['Espaço','Mergulho do goleiro'],['V','Avanço de bola do goleiro']],
+espectador:[['Q','Modo de câmera anterior'],['E','Próximo modo de câmera'],['TAB','Exibir placar'],
+ ['W A S D','Movimento (câmera solta)'],['Ctrl esq. / Shift esq.','Mover para cima / baixo'],
+ ['Scroll','Aproximar / afastar'],['Espaço','Redefinir câmera'],['1','Trocar jogador']]};
+
+/* ═══ ÍNDICE DE FONTES ═══ */
+const SRC=[
+ ['Oficial','Sloclap — Patch S4.0','Chute falso, atualização do goleiro, mudanças de desarme e ranque. A fonte primária de tudo que é novo.','https://www.playrematch.com/post/s4-0-patch-notes-1-204-000'],
+ ['Oficial','Sloclap — Monetização','Estrutura do passe, tiers, capítulos, Tier Token e as duas moedas, direto do estúdio.','https://www.playrematch.com/post/feature-focus-monetization'],
+ ['Oficial','Sloclap — Temporada 4 / Nations Cup','Como o evento de nações funciona, fases e recompensas.','https://www.playrematch.com/season-4-nations-cup'],
+ ['Mecânicas','GameRant — Todas as mecânicas','O guia mais completo, com captura de cada mecânica. Comece por aqui.','https://gamerant.com/all-every-rematch-mechanic-explained/'],
+ ['Mecânicas','Dexerto — Skill moves e inputs','Tabela de inputs de lençol, roleta, chop e chapéu, com imagem em ação.','https://www.dexerto.com/gaming/all-rematch-skill-moves-inputs-3216130/'],
+ ['Passe','GameRant — Guia de passe','Cada tipo de passe com captura própria: rasteiro, lob, passe com botão de chute.','https://gamerant.com/rematch-how-pass-guide/'],
+ ['Passe','YouTube — Guia de passe elite','Vídeo: um-dois, triângulos e quando usar cada passe. Movimento é melhor que captura aqui.','https://www.youtube.com/watch?v=3XmJ2aNdi88'],
+ ['Passe','YouTube — Tipos de passe','Vídeo: shot pass, ground pass e lob pass lado a lado.','https://www.youtube.com/watch?v=ghWQYcfDcjk'],
+ ['Chute','GAM3S — Técnicas avançadas de chute','Bladeshot, rotina de treino e manipulação do goleiro.','https://gam3s.gg/rematch/guides/rematch-shooting-advanced-techniques-to-score-more-goals/'],
+ ['Chute','Operation Sports — Bladeshot','Passo a passo do lob para si mesmo. Curto e direto.','https://www.operationsports.com/how-to-lob-the-ball-to-yourself-and-perform-a-blade-shot-in-rematch/'],
+ ['Chute','Rematch Guide — Chute','Catálogo de fakes, tabelas e chutes com efeito. Site feito por jogadores.','https://rematch-guide.com/tir'],
+ ['Drible','Rematch Guide — Dribles','Detalhes finos do avanço de bola e da janela de invulnerabilidade.','https://rematch-guide.com/dribbles'],
+ ['Drible','DualShockers — Todos os dribles','Explica também um drible que o tutorial do jogo não ensina.','https://www.dualshockers.com/rematch-how-to-do-all-dribble-skill-moves/'],
+ ['Drible','GameRant — Controle de bola','Primeiro toque, losango azul e como não perder a bola.','https://gamerant.com/rematch-how-control-ball/'],
+ ['Defesa','GameRant — Ser melhor defensor','Quando usar desarme em pé versus carrinho.','https://gamerant.com/rematch-better-defender-guide/'],
+ ['Defesa','DualShockers — Defensor','Como reagir ao lençol. Um dos poucos que ensina isso.','https://www.dualshockers.com/rematch-how-to-play-defender/'],
+ ['Defesa','Rematch Guide — Defesa','Interceptação, body block e leitura de jogo.','https://rematch-guide.com/defense'],
+ ['Goleiro','GamesRadar — Guia de goleiro','Rush keeper, stamina infinita e posicionamento.','https://www.gamesradar.com/games/sports/rematch-goalkeeper-guide/'],
+ ['Goleiro','DualShockers — Goleiro','Estratégia de área e quando sair do gol.','https://www.dualshockers.com/rematch-how-to-play-goalkeeper/'],
+ ['Goleiro','TheGamer — Defesa e goleiro','Postura defensiva e cabeceio como ferramenta de defesa.','https://www.thegamer.com/rematch-defense-pro-tips-goalkeeper-guide/'],
+ ['Sistemas','GameRant — Ranqueada','Ligas, divisões, RP e série de promoção.','https://gamerant.com/rematch-ranks-ranked-mode-explained/'],
+ ['Sistemas','TheGamer — Progressão de temporada','Capítulos, tiers e Tier Tokens explicados.','https://www.thegamer.com/rematch-season-progression-pass-chapters-tier-tokens-guide/'],
+ ['Sistemas','GameRant — Duelo 1v1','Regra do gol que abre e fecha, com medições de tempo.','https://gamerant.com/rematch-1-v-1-how-win-tips/'],
+ ['Controles','Deltia — Guia de controles','Mapa completo de PC e console.','https://deltiasgaming.com/rematch-control-guide/'],
+ ['Controles','Prima Games — Controles completos','Alternativa com comparação teclado versus controle.','https://primagames.com/tips/rematch-complete-controls'],
+ ['Roblox','Roblox Docs — Server Authority','O modelo de simulação compartilhada, BindToSimulation e rollback.','https://create.roblox.com/docs/projects/server-authority'],
+ ['Roblox','Roblox Newsroom — Server Authority','Anúncio com casos de uso, incluindo física de bola.','https://about.roblox.com/newsroom/2026/07/creating-responsive-cheat-resistant-games-roblox-server-authority'],
+ ['Roblox','DevForum — Lançamento do Server Authority','Discussão com desenvolvedores e casos reais.','https://devforum.roblox.com/t/full-release-ship-fair-and-competitive-games-with-server-authority/4727993'],
+ ['Roblox','Roblox Docs — Network ownership','O modelo antigo. Leia para entender o que evitar.','https://create.roblox.com/docs/physics/network-ownership'],
+ ['Roblox','Roblox Docs — Matchmaking','Custom matchmaking por sinais e atributos.','https://create.roblox.com/docs/matchmaking'],
+ ['Contexto','Wikipedia — Rematch','Ficha técnica, modos e regras básicas.','https://en.wikipedia.org/wiki/Rematch_(video_game)'],
+ ['Contexto','GameSpot — Análise','Boa explicação do rodízio de goleiro e do ritmo de partida.','https://www.gamespot.com/reviews/rematch-review-unbelievable-tekkers/1900-6418378/']
+];
+
+/* ═══ LABORATÓRIO DE TRAJETÓRIAS ═══ */
+function traj(p){return `<path class="traj run" pathLength="1" d="${p}"/>`;}
+function ball(p,r){return `<circle class="ballc" r="${r||5}" style="offset-path:path('${p}');animation:travel 1.9s ease-out forwards"/>`;}
+function topPitch(){return `<rect x="30" y="16" width="500" height="218" class="pitchfill"/>
+<rect x="30" y="16" width="500" height="218" class="pitchline"/>
+<rect x="200" y="16" width="160" height="52" class="pitchline"/>
+<rect x="245" y="16" width="70" height="7" fill="rgba(240,180,41,.28)" stroke="#F0B429" stroke-width="1"/>`;}
+function ground(){return `<line x1="20" y1="206" x2="540" y2="206" class="pitchline"/>
+<rect x="20" y="206" width="520" height="28" class="pitchfill"/>`;}
+
+const LAB=[
+{id:'magnus',n:'Chute com Magnus',c:'chute',
+ t:'Curvar a bola em volta da barreira',
+ d:'Mover o mouse para o lado durante a carga aplica rotação. A linha pontilhada é para onde o chute iria sem efeito — a sólida é com curva lateral. Um ponto pequeno na tela mostra a intensidade aplicada.',
+ k:['LMB (segurar)','+','mouse ←→'],
+ svg:()=>{const p='M 110 210 C 190 190, 300 190, 300 40';
+  return `<svg viewBox="0 0 560 250">${topPitch()}
+  <path class="traj-ghost" d="M 110 210 L 300 40"/>
+  ${traj(p)}
+  <circle class="defc" cx="212" cy="128" r="8"/><circle class="defc" cx="248" cy="112" r="8"/>
+  ${ball(p)}
+  <text class="labeltxt" x="120" y="232">SEM EFEITO ┈┈</text>
+  <text class="labeltxt" x="330" y="60" style="fill:#F0B429">COM MAGNUS</text></svg>`;}},
+
+{id:'dip',n:'Efeito para baixo',c:'chute',
+ t:'A bola sobe e despenca antes da trave',
+ d:'Puxar o mouse para baixo durante a carga faz a bola cair mais rápido. É o pesadelo do goleiro que está recuando — ele lê altura de bola alta e ela desaba na frente dele. Puxar para cima faz o oposto: aumenta o alcance, melhor para lançamento.',
+ k:['LMB (segurar)','+','mouse ↓'],
+ svg:()=>{const p='M 70 200 C 200 60, 330 40, 430 150';
+  return `<svg viewBox="0 0 560 250">${ground()}
+  <line x1="470" y1="118" x2="470" y2="206" class="pitchline"/>
+  <line x1="470" y1="118" x2="540" y2="118" stroke="#F0B429" stroke-width="2"/>
+  <line x1="540" y1="118" x2="540" y2="206" class="pitchline"/>
+  <path class="traj-ghost" d="M 70 200 C 200 60, 360 30, 545 60"/>
+  ${traj(p)}
+  <circle class="defc" cx="500" cy="176" r="9"/>
+  ${ball(p)}
+  <text class="labeltxt" x="150" y="46">┈ SEM DIP: PASSA POR CIMA</text>
+  <text class="labeltxt" x="330" y="196" style="fill:#F0B429">COM DIP</text></svg>`;}},
+
+{id:'voleio',n:'Janela do voleio',c:'chute',
+ t:'0,3 a 0,6 segundo antes de tocar o chão',
+ d:'Apertar cedo demais e o personagem só espera. Tarde demais e a bola já quicou, virando chute comum e fraco. Um triângulo aparece sobre a bola marcando a janela. É a finalização mais rápida do jogo porque bola no ar é o grau máximo de força.',
+ k:['LMB','na janela'],
+ svg:()=>{const p='M 60 30 C 160 90, 230 150, 300 200';
+  return `<svg viewBox="0 0 560 250">${ground()}
+  ${traj(p)}
+  ${ball(p)}
+  <rect x="330" y="60" width="200" height="24" fill="rgba(226,87,76,.15)" stroke="rgba(226,87,76,.5)"/>
+  <rect x="330" y="96" width="86" height="24" fill="rgba(63,191,168,.22)" stroke="#3FBFA8"/>
+  <rect x="416" y="96" width="60" height="24" fill="rgba(240,180,41,.3)" stroke="#F0B429" stroke-width="1.5"/>
+  <rect x="476" y="96" width="54" height="24" fill="rgba(226,87,76,.15)" stroke="rgba(226,87,76,.5)"/>
+  <text class="labeltxt" x="330" y="52">LINHA DO TEMPO ATÉ O CHÃO</text>
+  <text class="labeltxt" x="336" y="112" style="fill:#3FBFA8">CEDO</text>
+  <text class="labeltxt" x="422" y="112" style="fill:#F0B429">JANELA</text>
+  <text class="labeltxt" x="482" y="112" style="fill:#E2574C">TARDE</text>
+  <text class="labeltxt" x="416" y="140" style="fill:#F0B429">0,3s ─── 0,6s</text>
+  <polygon points="300,182 294,192 306,192" fill="#F0B429"/>
+  <text class="labeltxt" x="250" y="230">TRIÂNGULO = PODE VOLEAR</text></svg>`;}},
+
+{id:'pushball',n:'Avanço de bola',c:'drible',
+ t:'O losango azul, e a janela em que ninguém te desarma',
+ d:'Correndo, um losango azul aparece na bola indicando o momento do toque. Acertou, fica verde. Enquanto a bola está rolando solta o desarme adversário <b>atravessa</b> — é uma janela real de invulnerabilidade. Tocar sem correr manda menos longe e dá mais controle.',
+ k:['Espaço','em corrida'],
+ svg:()=>{const p='M 60 150 L 500 150';
+  return `<svg viewBox="0 0 560 250">${ground()}
+  <line x1="40" y1="150" x2="520" y2="150" class="pitchline" stroke-dasharray="4 6"/>
+  ${traj(p)}
+  <g transform="translate(160,150)"><rect x="-9" y="-9" width="18" height="18" transform="rotate(45)" fill="none" stroke="#3FBFA8" stroke-width="1.6"/></g>
+  <g transform="translate(290,150)"><rect x="-9" y="-9" width="18" height="18" transform="rotate(45)" fill="none" stroke="#3FBFA8" stroke-width="1.6"/></g>
+  <g transform="translate(420,150)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)" fill="rgba(63,191,168,.18)" stroke="#5FE39C" stroke-width="2"/></g>
+  <text class="labeltxt" x="126" y="128" style="fill:#3FBFA8">AZUL: PODE TOCAR</text>
+  <text class="labeltxt" x="382" y="128" style="fill:#5FE39C">VERDE: ACERTOU</text>
+  ${ball(p,5)}
+  <circle class="defc" cx="350" cy="188" r="9" opacity=".5"/>
+  <text class="labeltxt" x="300" y="212" style="fill:#E2574C">DESARME ATRAVESSA A BOLA ROLANDO</text></svg>`;}},
+
+{id:'lencol',n:'Lençol',c:'drible',
+ t:'Bonito, e estatisticamente ruim',
+ d:'Levanta a bola por cima do marcador. A distância varia se você está correndo. O problema: você perde o controle no ar. Defensor experiente <b>não desarma</b> — ele vira de costas e corre para onde a bola vai cair, ficando entre você e ela.',
+ k:['C','andando à frente'],
+ svg:()=>{const p='M 90 196 C 170 60, 300 60, 380 196';
+  return `<svg viewBox="0 0 560 250">${ground()}
+  ${traj(p)}
+  <circle class="defc" cx="235" cy="182" r="10"/>
+  <path d="M 250 178 L 320 178" stroke="#E2574C" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+  <polygon points="330,178 318,172 318,184" fill="#E2574C"/>
+  ${ball(p)}
+  <text class="labeltxt" x="196" y="216" style="fill:#E2574C">DEFENSOR VIRA E CORRE PARA A QUEDA</text>
+  <text class="labeltxt" x="200" y="52" style="fill:#F0B429">SEM CONTROLE NO AR</text></svg>`;}},
+
+{id:'blade',n:'Bladeshot',c:'chute',
+ t:'Quatro inputs em sequência',
+ d:'Você empurra a bola, faz um lob <b>curto</b> para si mesmo (o lob normal vai longe demais), aciona o esforço extra para alcançar, e chuta na queda. O esforço extra aqui não é velocidade — é a prioridade de disputa que garante que a bola é sua. Melhor executado na diagonal ao gol.',
+ k:['Espaço','→','X','→','Shift ×2','→','LMB'],
+ svg:()=>{const p='M 60 190 L 150 190 C 210 100, 300 90, 360 150 L 400 172';
+  return `<svg viewBox="0 0 560 250">${ground()}
+  <line x1="470" y1="118" x2="470" y2="206" class="pitchline"/>
+  <line x1="470" y1="118" x2="540" y2="118" stroke="#F0B429" stroke-width="2"/>
+  ${traj(p)}
+  <path class="traj-ghost" d="M 400 172 L 534 138"/>
+  ${ball(p)}
+  <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#5E7377" letter-spacing="1">
+  <text x="66" y="222">1 EMPURRA</text><text x="160" y="80">2 LOB CURTO</text>
+  <text x="300" y="72">3 ESFORÇO EXTRA</text><text x="380" y="212" fill="#F0B429">4 CHUTA NA QUEDA</text></g></svg>`;}},
+
+{id:'tabela',n:'Tabela na parede',c:'passe',
+ t:'A parede é um companheiro de time',
+ d:'A arena é fechada por vidro, então a bola nunca sai — parede vira linha de passe extra. Use trajetória <b>alta e com potência baixa</b>: rápida demais e o adversário pega o rebote. Serve para passar para si mesmo por trás do marcador, ou achar quem está livre num ângulo impossível.',
+ k:['RMB','ou','LMB','mirando na parede'],
+ svg:()=>{const p='M 90 200 L 300 24 L 470 132';
+  return `<svg viewBox="0 0 560 250">${topPitch()}
+  <line x1="30" y1="16" x2="530" y2="16" stroke="#F0B429" stroke-width="2.5"/>
+  ${traj(p)}
+  <circle class="defc" cx="230" cy="140" r="9"/>
+  ${ball(p)}
+  <circle cx="470" cy="132" r="8" fill="none" stroke="#3FBFA8" stroke-width="2"/>
+  <text class="labeltxt" x="360" y="12" style="fill:#F0B429">PAREDE — SEMPRE JOGÁVEL</text>
+  <text class="labeltxt" x="416" y="156" style="fill:#3FBFA8">COMPANHEIRO LIVRE</text></svg>`;}},
+
+{id:'mergulho',n:'Mergulho do goleiro',c:'goleiro',
+ t:'O que mudou na Temporada 4',
+ d:'A hitbox do mergulho foi reduzida — menos magnetismo, mais leitura. Em compensação o goleiro agora rebate também com as pernas, e o ângulo do rebote foi ajustado para <b>não voltar para dentro do gol</b>. Em modo defesa, à queima-roupa ele rebate em vez de segurar: a jogada não reseta.',
+ k:['Espaço','+ direção'],
+ svg:()=>{const p='M 500 210 C 400 160, 260 120, 176 106';
+  return `<svg viewBox="0 0 560 250">
+  <rect x="120" y="40" width="320" height="166" class="pitchfill"/>
+  <rect x="120" y="40" width="320" height="166" fill="none" stroke="#E6EFEA" stroke-width="2.5" opacity=".55"/>
+  <line x1="20" y1="206" x2="540" y2="206" class="pitchline"/>
+  <path d="M 280 150 L 200 112" stroke="#93A8A5" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+  <circle cx="286" cy="140" r="12" fill="#93A8A5" opacity=".8"/>
+  ${traj(p)}
+  <path class="traj-ghost" d="M 176 106 L 60 74"/>
+  ${ball(p)}
+  <text class="labeltxt" x="60" y="66" style="fill:#F0B429">REBOTE SAI PARA FORA ┈┈</text>
+  <text class="labeltxt" x="300" y="182">HITBOX REDUZIDA</text>
+  <text class="labeltxt" x="140" y="30">GOL</text></svg>`;}}
+];
+
+/* ═══ RENDER ═══ */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+// lab
+const picker=$('#labPicker');
+picker.innerHTML=LAB.map((x,i)=>`<button class="lab-btn${i?'':' on'}" data-i="${i}">${x.n}<small>${x.c}</small></button>`).join('');
+function showLab(i){
+  const x=LAB[i];
+  $('#labCanvas').innerHTML=x.svg();
+  $('#labInfo').innerHTML=`<h5>${x.t}</h5><p>${x.d}</p>
+    <div class="lab-inputs">${x.k.map(k=>k==='→'||k==='+'||k==='ou'?`<span class="arrow">${k}</span>`:`<span class="key hot">${k}</span>`).join('')}
+    <button class="lab-replay" id="replay">↻ repetir</button></div>`;
+  $('#replay').onclick=()=>showLab(i);
+  $$('.lab-btn').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));
+}
+picker.addEventListener('click',e=>{const b=e.target.closest('.lab-btn');if(b)showLab(+b.dataset.i);});
+showLab(0);
+
+// ═══ ARMAZENAMENTO DE REFERÊNCIAS ═══
+const STORE=(()=>{try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return localStorage;}
+  catch(e){const m={};return{getItem:k=>k in m?m[k]:null,setItem:(k,v)=>{m[k]=v},removeItem:k=>{delete m[k]},
+  keys:()=>Object.keys(m),_mem:m};}})();
+const KEY=id=>'gddref:'+id;
+const allKeys=()=>STORE.keys?STORE.keys():Object.keys(localStorage);
+function getShot(id){return STORE.getItem(KEY(id));}
+function setShot(id,data){STORE.setItem(KEY(id),data);refreshBar();}
+function delShot(id){STORE.removeItem(KEY(id));refreshBar();}
+
+// reduz a imagem antes de guardar, para não estourar o armazenamento
+function shrink(file,cb){
+  const fr=new FileReader();
+  fr.onload=()=>{const im=new Image();im.onload=()=>{
+    const max=680,r=Math.min(1,max/im.width);
+    const c=document.createElement('canvas');c.width=im.width*r;c.height=im.height*r;
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+    cb(c.toDataURL('image/jpeg',.78));};im.src=fr.result;};
+  fr.readAsDataURL(file);
+}
+
+let SLOTS=[];
+function paintSlot(box){
+  const id=box.dataset.slot,d=getShot(id),ref=box._ref;
+  if(d){box.classList.add('filled');
+    box.innerHTML=`<img src="${d}" alt="${box._t}"><button class="shot-del" title="remover">✕</button>`;
+    const im=box.querySelector('img');
+    im.onerror=()=>{box.classList.remove('filled');
+      box.innerHTML=`<div class="shot-empty"><span class="shot-ico" style="color:var(--flare)">⚠</span>
+      <span>o site bloqueou o link</span><span style="color:var(--amber)">salve a imagem e arraste do PC</span>
+      <button class="shot-get" style="background:none;border:none;cursor:pointer;color:var(--teal);font-family:var(--mono);font-size:8.5px">limpar</button></div>`;
+      box.querySelector('button').onclick=e=>{e.stopPropagation();delShot(box.dataset.slot);paintSlot(box)};};}
+  else{box.classList.remove('filled');
+    box.innerHTML=`<div class="shot-empty"><span class="shot-ico">⇱</span><span>arraste a imagem</span>
+      ${ref?`<a class="shot-get" href="${ref.u}" target="_blank" rel="noopener">${ref.l} ↗</a>`:''}</div>`;}
+}
+function wireSlot(box){
+  SLOTS.push(box);
+  box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over')});
+  box.addEventListener('dragleave',()=>box.classList.remove('over'));
+  box.addEventListener('drop',e=>{
+    e.preventDefault();box.classList.remove('over');
+    const f=[...(e.dataTransfer.files||[])].find(x=>x.type.startsWith('image/'));
+    if(f){shrink(f,d=>{setShot(box.dataset.slot,d);paintSlot(box)});return;}
+    const url=e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain');
+    if(url&&/^https?:/.test(url)){
+      // imagem arrastada direto da página: guarda o endereço
+      setShot(box.dataset.slot,url);paintSlot(box);
+    }
+  });
+  box.addEventListener('click',e=>{
+    if(e.target.classList.contains('shot-del')){delShot(box.dataset.slot);paintSlot(box);return;}
+    if(e.target.tagName==='A')return;
+    if(box.classList.contains('filled')){openLB(getShot(box.dataset.slot),box._t);return;}
+    const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+    inp.onchange=()=>{if(inp.files[0])shrink(inp.files[0],d=>{setShot(box.dataset.slot,d);paintSlot(box)})};
+    inp.click();
+  });
+  box.tabIndex=0;
+  box.addEventListener('paste',e=>{
+    const it=[...(e.clipboardData&&e.clipboardData.items||[])].find(x=>x.type.startsWith('image/'));
+    if(it){e.preventDefault();shrink(it.getAsFile(),d=>{setShot(box.dataset.slot,d);paintSlot(box)});}
+  });
+  paintSlot(box);
+}
+
+// mecânicas
+$$('.meclist').forEach(el=>{
+  const cat=el.dataset.mec,arr=MEC[cat]||[];
+  el.innerHTML=arr.map((m,i)=>{
+    const id=cat+'-'+i;
+    const tg=m.tag==='novo'?'<span class="tag novo">Temporada 4</span>':
+             m.tag==='avan'?'<span class="tag avan">avançado</span>':'<span class="tag base">base</span>';
+    const keys=m.k.map(k=>['→','+','ou'].includes(k)?`<span class="arrow">${k}</span>`:`<span class="key">${k}</span>`).join('');
+    const srcs=(m.s||[]).map(x=>S[x]?`<a class="src" href="${S[x].u}" target="_blank" rel="noopener">${S[x].l}</a>`:'').join('');
+    return `<div class="mec"><div class="mec-n">${String(i+1).padStart(2,'0')}</div><div>
+      <div class="mec-t">${m.t} ${tg}</div>
+      <div class="mec-d">${m.d}</div>
+      <div class="mec-foot">${keys}${srcs}</div></div>
+      <div class="shot" data-slot="${id}"></div></div>`;
+  }).join('');
+  el.querySelectorAll('.shot').forEach((box,i)=>{
+    box._ref=REF[arr[i].t]||null; box._t=arr[i].t; wireSlot(box);
+  });
+});
+
+// ═══ LIGHTBOX ═══
+const lb=document.createElement('div');
+lb.className='lightbox';
+lb.innerHTML='<button class="lightbox-x">fechar ✕</button><img alt=""><div class="lightbox-cap"></div>';
+document.body.appendChild(lb);
+function openLB(src,cap){lb.querySelector('img').src=src;lb.querySelector('.lightbox-cap').textContent=cap||'';lb.classList.add('on');}
+lb.addEventListener('click',e=>{if(e.target===lb||e.target.classList.contains('lightbox-x'))lb.classList.remove('on')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on')});
+
+// ═══ BARRA DE COLETA ═══
+function refreshBar(){
+  const total=SLOTS.length||51;
+  const got=SLOTS.filter(b=>getShot(b.dataset.slot)).length;
+  const n=$('#refN'),f=$('#refFill');
+  if(n)n.textContent=got+'/'+total;
+  if(f)f.style.width=(got/total*100)+'%';
+}
+
+// controles
+Object.keys(KB).forEach(k=>{
+  $('#kb-'+k).innerHTML='<div class="kbmap">'+KB[k].map(([key,act])=>
+    `<div class="kbrow"><div class="kbkeys">${key.split(' + ').map(x=>`<span class="key">${x}</span>`).join('<span class="arrow">+</span>')}</div>
+     <div class="kbact">${act}</div></div>`).join('')+'</div>';
+});
+$('#kbTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(!t)return;
+  $$('#kbTabs .tab').forEach(x=>x.classList.toggle('on',x===t));
+  $$('.tabpanel').forEach(p=>p.classList.toggle('on',p.id==='kb-'+t.dataset.kb));
+});
+
+// fontes
+$('#srcGrid').innerHTML=SRC.map(([cat,tit,desc,url])=>
+  `<a class="srccard" href="${url}" target="_blank" rel="noopener">
+    <div class="srccard-h">${cat}</div><div class="srccard-t">${tit} ↗</div>
+    <div class="srccard-d">${desc}</div></a>`).join('');
+
+// busca
+const search=$('#search');
+search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  const targets=$$('.mec, .srccard, .kbrow, .card, .tbl tbody tr, .tbl tr');
+  if(!q){targets.forEach(t=>t.classList.remove('hidden'));$$('section').forEach(s=>s.classList.remove('hidden'));return;}
+  $$('section').forEach(sec=>{
+    let any=false;
+    sec.querySelectorAll('.mec, .srccard, .kbrow').forEach(t=>{
+      const hit=t.textContent.toLowerCase().includes(q);
+      t.classList.toggle('hidden',!hit); if(hit)any=true;
+    });
+    const secHit=sec.textContent.toLowerCase().includes(q);
+    sec.classList.toggle('hidden',!(any||secHit));
+  });
+});
+
+// nav ativa
+const secs=$$('section[id]');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){
+    $$('.sidenav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));
+  }});
+},{rootMargin:'-72px 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+
+// exportar / importar / limpar
+$('#expBtn').onclick=()=>{
+  const out={};SLOTS.forEach(b=>{const d=getShot(b.dataset.slot);if(d)out[b.dataset.slot]=d;});
+  const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='referencias-gdd.json';a.click();
+};
+$('#impBtn').onclick=()=>{
+  const i=document.createElement('input');i.type='file';i.accept='application/json';
+  i.onchange=()=>{const f=i.files[0];if(!f)return;const r=new FileReader();
+    r.onload=()=>{try{const o=JSON.parse(r.result);
+      Object.keys(o).forEach(k=>STORE.setItem(KEY(k),o[k]));
+      SLOTS.forEach(paintSlot);refreshBar();}catch(e){alert('Arquivo inválido.')}};
+    r.readAsText(f);};
+  i.click();
+};
+$('#clrBtn').onclick=()=>{
+  if(!confirm('Remover todas as imagens coletadas?'))return;
+  SLOTS.forEach(b=>STORE.removeItem(KEY(b.dataset.slot)));
+  SLOTS.forEach(paintSlot);refreshBar();
+};
+refreshBar();
+
+// menu mobile
+$('#navToggle').onclick=()=>$('#sidenav').classList.toggle('open');
+$('#sidenav').addEventListener('click',e=>{if(e.target.tagName==='A')$('#sidenav').classList.remove('open');});
+</script>
+</body>
+</html>
